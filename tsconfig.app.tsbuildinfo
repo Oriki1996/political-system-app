@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/components/dashboard.tsx","./src/components/header.tsx","./src/components/prose.tsx","./src/components/quizquestion.tsx","./src/components/segmentview.tsx","./src/components/unitview.tsx","./src/content/index.ts","./src/content/units/unit01.ts","./src/lib/theme.ts"],"version":"5.7.3"}

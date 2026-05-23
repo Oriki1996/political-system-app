@@ -1,0 +1,60 @@
+@import url("https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+html { direction: rtl; }
+
+body {
+  font-family: "Heebo", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse 70vw 50vh at 15% 8%,  rgba(167, 139, 250, 0.20), transparent 60%),
+    radial-gradient(ellipse 60vw 45vh at 85% 22%, rgba(56, 189, 248, 0.16),  transparent 60%),
+    radial-gradient(ellipse 80vw 60vh at 50% 100%, rgba(244, 114, 182, 0.13), transparent 65%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+  background-attachment: fixed;
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+html.dark body {
+  background:
+    radial-gradient(ellipse 70vw 50vh at 15% 8%,  rgba(124, 58, 237, 0.32),  transparent 60%),
+    radial-gradient(ellipse 60vw 45vh at 85% 22%, rgba(14, 165, 233, 0.18),  transparent 60%),
+    radial-gradient(ellipse 80vw 60vh at 50% 100%, rgba(236, 72, 153, 0.12), transparent 65%),
+    linear-gradient(180deg, #0b1020 0%, #0f172a 100%);
+  background-attachment: fixed;
+  color: #e2e8f0;
+}
+
+/* Inline highlights for prose */
+.hl-term     { color: #1f76e5; font-weight: 600; }
+.hl-name     { color: #6d28d9; font-weight: 700; }
+.hl-date     { color: #059669; font-weight: 600; }
+.hl-warning  { color: #dc2626; font-weight: 700; }
+.hl-quote    { color: #1f3864; font-style: italic; }
+
+html.dark .hl-term    { color: #93c5fd; }
+html.dark .hl-name    { color: #c4b5fd; }
+html.dark .hl-date    { color: #6ee7b7; }
+html.dark .hl-warning { color: #fca5a5; }
+html.dark .hl-quote   { color: #cbd5e1; }
+
+@layer components {
+  .card {
+    @apply rounded-2xl bg-white/80 dark:bg-slate-900/80 backdrop-blur border border-slate-200/60 dark:border-slate-700/60 shadow-card;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 font-medium transition;
+  }
+  .btn-primary {
+    @apply btn bg-brand-600 hover:bg-brand-700 text-white shadow-soft;
+  }
+  .btn-ghost {
+    @apply btn bg-slate-100/70 dark:bg-slate-800/70 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 text-slate-700 dark:text-slate-200;
+  }
+}
