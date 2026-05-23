@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Moon, Sun, ArrowRight, BookOpen } from "lucide-react";
+import { Moon, Sun, ArrowRight, BookOpen, LogOut, User } from "lucide-react";
 import { initTheme, toggleTheme, isDark } from "../lib/theme";
+import { useAuth } from "../lib/auth";
 
 interface Props {
   onHome?: () => void;
@@ -9,6 +10,7 @@ interface Props {
 
 export default function Header({ onHome, showBack }: Props) {
   const [dark, setDark] = useState(false);
+  const { profile, signOut, isGuest } = useAuth();
 
   useEffect(() => {
     initTheme();
@@ -36,6 +38,13 @@ export default function Header({ onHome, showBack }: Props) {
             חזרה
           </button>
         )}
+        {profile && (
+          <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60 rounded-lg px-2.5 py-1">
+            <User size={12} />
+            <span className="font-medium truncate max-w-[120px]">{profile.display_name}</span>
+            {isGuest && <span className="text-amber-600 dark:text-amber-400 text-[10px]">·אורח</span>}
+          </div>
+        )}
         <button
           onClick={() => setDark(toggleTheme())}
           className="btn-ghost !p-2"
@@ -43,6 +52,16 @@ export default function Header({ onHome, showBack }: Props) {
         >
           {dark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
+        {profile && (
+          <button
+            onClick={signOut}
+            className="btn-ghost !p-2"
+            aria-label="יציאה"
+            title="יציאה"
+          >
+            <LogOut size={16} />
+          </button>
+        )}
       </div>
     </header>
   );

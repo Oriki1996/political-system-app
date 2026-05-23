@@ -2,16 +2,31 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Dashboard from "./components/Dashboard";
 import UnitView from "./components/UnitView";
+import Login from "./components/Login";
+import { AuthProvider, useAuth } from "./lib/auth";
 import { UNITS } from "./content";
 
 type Route = { view: "dashboard" } | { view: "unit"; id: string };
 
-export default function App() {
+function Shell() {
+  const { profile, loading } = useAuth();
   const [route, setRoute] = useState<Route>({ view: "dashboard" });
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [route]);
+
+  if (loading) {
+    return (
+      <div className="min-h-[100dvh] grid place-items-center">
+        <div className="text-slate-500 dark:text-slate-400 animate-pulse">טוען...</div>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return <Login />;
+  }
 
   const goHome = () => setRoute({ view: "dashboard" });
 
@@ -27,5 +42,13 @@ export default function App() {
         מבוסס על שמעוני 2001 ומאמרי החובה האחרים בסילבוס · עיצוב למידה אישי לאורי בן-דוד
       </footer>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <Shell />
+    </AuthProvider>
   );
 }

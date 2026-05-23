@@ -1,31 +1,44 @@
 import { motion } from "framer-motion";
 import { Target, Compass, FileText } from "lucide-react";
-import type { UnitMeta } from "../types";
-import SegmentView from "./SegmentView";
+import type { Unit } from "../types";
+import SectionView from "./SectionView";
 
-export default function UnitView({ unit }: { unit: UnitMeta }) {
+export default function UnitView({ unit }: { unit: Unit }) {
   const isPlaceholder = unit.status === "placeholder";
+  const hasContent = unit.sections && unit.sections.length > 0;
 
   return (
     <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-      {/* Cover */}
+      {/* Hero cover */}
       <motion.section
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="card p-6 sm:p-8 bg-gradient-to-bl from-brand-50/80 to-accent-50/40 dark:from-brand-950/40 dark:to-accent-950/30"
+        className="card overflow-hidden"
       >
-        <div className="text-sm font-bold text-brand-600 dark:text-brand-400 mb-1">
-          יחידה {String(unit.number).padStart(2, "0")}
-        </div>
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight">
-          {unit.title}
-        </h1>
-        <p className="text-slate-600 dark:text-slate-300 mt-2">{unit.subtitle}</p>
-
-        <div className="mt-4 flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
-          <FileText size={14} className="mt-0.5 shrink-0" />
-          <div>
-            <span className="font-semibold">מאמרי חובה:</span> {unit.articles.join(" · ")}
+        {unit.heroImage && (
+          <div className={`h-32 sm:h-44 bg-gradient-to-bl ${unit.color || "from-brand-500 to-accent-500"} relative`}>
+            <img
+              src={unit.heroImage}
+              alt=""
+              className="w-full h-full object-cover opacity-40 mix-blend-overlay"
+              onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+            <div className="absolute bottom-3 right-4 text-white">
+              <div className="text-xs font-bold opacity-90">יחידה {String(unit.number).padStart(2, "0")}</div>
+            </div>
+          </div>
+        )}
+        <div className="p-6 sm:p-7">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 leading-tight">
+            {unit.title}
+          </h1>
+          <p className="text-slate-600 dark:text-slate-300 mt-2">{unit.subtitle}</p>
+          <div className="mt-4 flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+            <FileText size={14} className="mt-0.5 shrink-0" />
+            <div>
+              <span className="font-semibold">מאמרי חובה:</span> {unit.articles.join(" · ")}
+            </div>
           </div>
         </div>
       </motion.section>
@@ -65,28 +78,22 @@ export default function UnitView({ unit }: { unit: UnitMeta }) {
         </section>
       )}
 
-      {/* Segments */}
-      {unit.segments && unit.segments.length > 0 ? (
+      {/* Sections */}
+      {hasContent ? (
         <div className="space-y-5">
-          {unit.segments.map((seg) => (
-            <SegmentView key={seg.id} segment={seg} />
+          {unit.sections!.map((s, i) => (
+            <SectionView key={s.id} section={s} index={i + 1} />
           ))}
         </div>
       ) : isPlaceholder ? (
         <section className="card p-8 text-center">
-          <div className="text-4xl mb-2">⏳</div>
-          <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-1">
-            היחידה בתהליך בנייה
-          </h3>
+          <div className="text-5xl mb-3">⏳</div>
+          <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-1.5">היחידה בתהליך בנייה</h3>
           <p className="text-sm text-slate-600 dark:text-slate-300">
             התוכן יתווסף בסשנים הבאים, לפי סדר הסילבוס.
           </p>
         </section>
-      ) : (
-        <section className="card p-6 text-center text-slate-500 dark:text-slate-400 text-sm">
-          קטעים נוספים יתווספו בקרוב.
-        </section>
-      )}
+      ) : null}
     </main>
   );
 }

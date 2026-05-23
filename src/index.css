@@ -31,18 +31,22 @@ html.dark body {
   color: #e2e8f0;
 }
 
-/* Inline highlights for prose */
-.hl-term     { color: #1f76e5; font-weight: 600; }
-.hl-name     { color: #6d28d9; font-weight: 700; }
-.hl-date     { color: #059669; font-weight: 600; }
-.hl-warning  { color: #dc2626; font-weight: 700; }
-.hl-quote    { color: #1f3864; font-style: italic; }
+/* Semantic inline highlights — match psychopath palette */
+.hl-term      { color: #1f76e5; font-weight: 600; }
+.hl-name      { color: #6d28d9; font-weight: 700; background: linear-gradient(180deg, transparent 60%, rgba(167,139,250,0.22) 60%); padding: 0 2px; }
+.hl-date      { color: #059669; font-weight: 600; }
+.hl-criterion { color: #047857; font-weight: 700; }
+.hl-warning   { color: #dc2626; font-weight: 700; }
+.hl-school    { color: #0e7490; font-weight: 700; }
+.hl-quote     { color: #1f3864; font-style: italic; }
 
-html.dark .hl-term    { color: #93c5fd; }
-html.dark .hl-name    { color: #c4b5fd; }
-html.dark .hl-date    { color: #6ee7b7; }
-html.dark .hl-warning { color: #fca5a5; }
-html.dark .hl-quote   { color: #cbd5e1; }
+html.dark .hl-term      { color: #93c5fd; }
+html.dark .hl-name      { color: #c4b5fd; background: linear-gradient(180deg, transparent 60%, rgba(167,139,250,0.32) 60%); }
+html.dark .hl-date      { color: #6ee7b7; }
+html.dark .hl-criterion { color: #6ee7b7; }
+html.dark .hl-warning   { color: #fca5a5; }
+html.dark .hl-school    { color: #67e8f9; }
+html.dark .hl-quote     { color: #cbd5e1; }
 
 @layer components {
   .card {
