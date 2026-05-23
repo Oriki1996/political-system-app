@@ -18,9 +18,12 @@ export interface UnitMeta {
 export interface Unit extends UnitMeta {
   sections?: RichSection[];
   quiz?: {
+    application?: ComprehensionQ[];
     recall?: ComprehensionQ[];
     critical?: ComprehensionQ[];
     integration?: ComprehensionQ[];
   };
+  /** Combined exam pool — random sampling for unit exam */
+  examBank?: ComprehensionQ[];
   keyTerms?: KeyTerm[];
 }

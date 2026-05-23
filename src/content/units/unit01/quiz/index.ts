@@ -1,13 +1,17 @@
 import type { ComprehensionQ } from "../../../../types";
+import { unit01Application } from "./application";
 
-// בנק שאלות סיכום ליחידה — מעבר לשאלות שמופיעות בתוך הסקשנים
-// יתווסף אחרי שייבנו קטעים 2-6 (הרצל, אחד העם, סינתטית, כללית)
+// בנק שאלות מבחן ליחידה.
+// application = שאלות יישום וקייס לבחינה אמריקאית.
+// בעתיד נוסיף knowledge / cases-extended / final.
 export const unit01Quiz: {
+  application: ComprehensionQ[];
   recall?: ComprehensionQ[];
   critical?: ComprehensionQ[];
   integration?: ComprehensionQ[];
 } = {
-  recall: [],
-  critical: [],
-  integration: [],
+  application: unit01Application,
 };
+
+// כל השאלות הזמינות למבחן יחידה (אפשר להוסיף מאגרים בעתיד)
+export const unit01ExamBank: ComprehensionQ[] = [...unit01Application];
