@@ -19,9 +19,13 @@ import { section as s17 } from "./17-after-herzl";
 import { section as s18 } from "./18-practicalists-rise";
 import { section as s19 } from "./19-synthesis-formation";
 import { section as s20 } from "./20-weizmann-balfour";
+import { section as s21 } from "./21-birth-of-general-zionism";
+import { section as s22 } from "./22-ideological-foundations";
+import { section as s23 } from "./23-welsch-middle-way";
+import { section as s24 } from "./24-kaufmann-and-conclusion";
 
 export const unit01Sections: RichSection[] = [
   s01, s02, s03, s04, s05, s06, s07, s08,
   s09, s10, s11, s12, s13, s14, s15, s16,
-  s17, s18, s19, s20,
+  s17, s18, s19, s20, s21, s22, s23, s24,
 ];

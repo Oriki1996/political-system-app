@@ -6,7 +6,7 @@ export const unit01Meta: UnitMeta = {
   title: "התנועה הציונית עד מלחמת העולם הראשונה",
   subtitle: "על פי שמעוני, 'ציונות כללית' (האידאולוגיה הציונית לגווניה, פרק 3, עמ' 79–117)",
   articles: ["שמעוני 2001 — ציונות כללית"],
-  status: "in-progress",
+  status: "ready",
   heroImage: "/topics/unit01.svg",
   color: "from-sky-500 to-indigo-600",
   leadQuestion:
