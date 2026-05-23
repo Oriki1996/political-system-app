@@ -1,14 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Target, Compass, FileText, ChevronDown, BookOpen,
   Users, Globe2, AlertTriangle, Brain, Layers, Lightbulb,
-  GraduationCap, ChevronLeft,
+  GraduationCap, Puzzle as PuzzleIcon, Sparkles,
 } from "lucide-react";
 import type { Unit, KeyTerm } from "../types";
 import Honeycomb, { autoColor, type HoneycombItem } from "./Honeycomb";
 import SectionDrawer from "./SectionDrawer";
 import ExamMode from "./ExamMode";
+import PuzzleMode from "./PuzzleMode";
+import { getMistakeIds, getMistakeCount } from "../lib/mistakes";
 
 const SECTION_ICONS = [Layers, Brain, Users, Globe2, AlertTriangle, BookOpen, Lightbulb, Compass];
 
@@ -19,8 +21,33 @@ export default function UnitView({ unit }: { unit: Unit }) {
   const [visited, setVisited] = useState<Set<number>>(new Set());
   const [objectivesOpen, setObjectivesOpen] = useState(false);
   const [examOpen, setExamOpen] = useState(false);
+  const [smartOpen, setSmartOpen] = useState(false);
+  const [puzzleOpen, setPuzzleOpen] = useState(false);
+  const [mistakeCount, setMistakeCount] = useState(0);
+
   const examBank = unit.examBank || [];
+  const puzzles = unit.puzzles || [];
   const hasExam = examBank.length > 0;
+  const hasPuzzles = puzzles.length > 0;
+
+  // Re-check mistakes on each render after exams close
+  useEffect(() => {
+    setMistakeCount(getMistakeCount(unit.id));
+  }, [unit.id, examOpen, smartOpen]);
+
+  const mistakeQuestions = useMemo(() => {
+    const ids = getMistakeIds(unit.id);
+    return examBank.filter((q) => q.id && ids.includes(q.id));
+  }, [unit.id, examBank, smartOpen]);
+
+  // Helper: open a section by id (for "back to section" from exam/puzzle review)
+  const openSectionById = (sectionId: string) => {
+    const i = sections.findIndex((s) => s.id === sectionId);
+    if (i >= 0) {
+      setOpenIdx(i);
+      setVisited((s) => new Set(s).add(i));
+    }
+  };
 
   const honeycombItems: HoneycombItem[] = useMemo(
     () =>
@@ -177,36 +204,43 @@ export default function UnitView({ unit }: { unit: Unit }) {
         </section>
       ) : null}
 
-      {/* Exam button */}
-      {hasExam && (
-        <motion.section
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="card p-0 overflow-hidden"
-        >
-          <button
-            onClick={() => setExamOpen(true)}
-            className="w-full text-right p-5 sm:p-6 bg-gradient-to-l from-amber-50 via-orange-50/70 to-amber-50/60 dark:from-amber-950/30 dark:via-orange-950/30 dark:to-amber-950/20 hover:from-amber-100 hover:to-orange-100 dark:hover:from-amber-950/50 dark:hover:to-orange-950/50 transition-colors flex items-center gap-4 group"
-          >
-            <div className="shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 text-white grid place-items-center shadow-soft">
-              <GraduationCap size={26} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="font-extrabold text-amber-900 dark:text-amber-100">
-                  🎓 מבחן יחידה {String(unit.number).padStart(2, "0")}
-                </h3>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-200/80 dark:bg-amber-800/70 text-amber-900 dark:text-amber-100">
-                  {examBank.length} שאלות
-                </span>
-              </div>
-              <p className="text-sm text-amber-800/80 dark:text-amber-200/80 mt-0.5 leading-relaxed">
-                שאלות יישום וקייס בסגנון בחינה אמריקאית — תרגול לבחינה הסופית
-              </p>
-            </div>
-            <ChevronLeft size={22} className="text-amber-700 dark:text-amber-300 shrink-0 group-hover:-translate-x-1 transition-transform" />
-          </button>
-        </motion.section>
+      {/* Practice modes — 3 buttons in a row */}
+      {(hasExam || hasPuzzles) && (
+        <section className="grid sm:grid-cols-3 gap-3">
+          {hasExam && (
+            <PracticeButton
+              icon={<GraduationCap size={22} />}
+              title="מבחן יחידה"
+              subtitle={`${examBank.length} שאלות יישום וקייס`}
+              gradient="from-amber-500 to-orange-600"
+              bg="from-amber-50 to-orange-50/70 dark:from-amber-950/30 dark:to-orange-950/20"
+              onClick={() => setExamOpen(true)}
+            />
+          )}
+          <PracticeButton
+            icon={<Sparkles size={22} />}
+            title="תרגול חכם"
+            subtitle={
+              mistakeCount > 0
+                ? `${mistakeCount} שאלות שטעית בהן — חזור עד שתשלוט`
+                : "אין שאלות שטעית בהן עדיין — קודם מבחן"
+            }
+            gradient="from-sky-500 to-cyan-600"
+            bg="from-sky-50 to-cyan-50/70 dark:from-sky-950/30 dark:to-cyan-950/20"
+            disabled={mistakeCount === 0}
+            onClick={() => setSmartOpen(true)}
+          />
+          {hasPuzzles && (
+            <PracticeButton
+              icon={<PuzzleIcon size={22} />}
+              title="פאזלי קייס"
+              subtitle={`${puzzles.length} פאזלי השלמה — סדר משפטים בקייס`}
+              gradient="from-violet-500 to-fuchsia-600"
+              bg="from-violet-50 to-fuchsia-50/70 dark:from-violet-950/30 dark:to-fuchsia-950/20"
+              onClick={() => setPuzzleOpen(true)}
+            />
+          )}
+        </section>
       )}
 
       {/* Key terms */}
@@ -238,14 +272,74 @@ export default function UnitView({ unit }: { unit: Unit }) {
       <AnimatePresence>
         {examOpen && hasExam && (
           <ExamMode
+            unitId={unit.id}
             unitTitle={unit.title}
             unitNumber={unit.number}
             questions={examBank}
             onClose={() => setExamOpen(false)}
+            onOpenSection={openSectionById}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Smart Practice overlay */}
+      <AnimatePresence>
+        {smartOpen && mistakeQuestions.length > 0 && (
+          <ExamMode
+            unitId={unit.id}
+            unitTitle={unit.title}
+            unitNumber={unit.number}
+            questions={mistakeQuestions}
+            modeLabel="תרגול חכם · יחידה"
+            onClose={() => setSmartOpen(false)}
+            onOpenSection={openSectionById}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Puzzle overlay */}
+      <AnimatePresence>
+        {puzzleOpen && hasPuzzles && (
+          <PuzzleMode
+            puzzles={puzzles}
+            unitNumber={unit.number}
+            onClose={() => setPuzzleOpen(false)}
+            onOpenSection={openSectionById}
           />
         )}
       </AnimatePresence>
     </main>
+  );
+}
+
+function PracticeButton({
+  icon, title, subtitle, gradient, bg, onClick, disabled,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+  gradient: string;
+  bg: string;
+  onClick: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <motion.button
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={!disabled ? { y: -2 } : undefined}
+      onClick={onClick}
+      disabled={disabled}
+      className={`card text-right p-5 bg-gradient-to-l ${bg} group transition-all ${
+        disabled ? "opacity-60 cursor-not-allowed" : "hover:shadow-soft cursor-pointer"
+      }`}
+    >
+      <div className={`shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br ${gradient} text-white grid place-items-center shadow-soft mb-3`}>
+        {icon}
+      </div>
+      <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-sm mb-1">{title}</h3>
+      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{subtitle}</p>
+    </motion.button>
   );
 }
 

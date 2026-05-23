@@ -13,6 +13,18 @@ export interface RichSegment {
 
 export type QuestionLevel = "recall" | "critical" | "integration";
 
+/** Pointer to source material — lets the review screen jump back to the section. */
+export interface SectionRef {
+  /** id of the RichSection (e.g. "u01-s01") */
+  sectionId: string;
+  /** the exact quote from the section that grounds the correct answer */
+  quote?: string;
+  /** which paragraph index inside the section (for highlighting later) */
+  paragraphIdx?: number;
+  /** short tag for grouping in smart-practice ("functional/organic", etc.) */
+  topic?: string;
+}
+
 export interface ComprehensionQ {
   id?: string;
   level?: QuestionLevel;
@@ -22,6 +34,38 @@ export interface ComprehensionQ {
   correct: number;
   rationale: string;
   optionExplanations?: string[];
+  /** Where in the unit the answer is grounded — for "back to source" + smart practice. */
+  sectionRef?: SectionRef;
+}
+
+/** Gap-fill puzzle: case paragraph with N blanks, pool of choices. */
+export interface PuzzleBlank {
+  /** unique id for this blank inside the puzzle */
+  id: string;
+  /** ids of pool items that fit this blank correctly (usually one) */
+  acceptIds: string[];
+}
+
+export interface PuzzlePoolItem {
+  id: string;
+  text: string;
+  /** optional category label shown after solution reveal */
+  category?: string;
+}
+
+export interface Puzzle {
+  id: string;
+  title: string;
+  /** Short intro / case context */
+  context: string;
+  /** Paragraph segments with embedded blanks. Use { blankId: "b1" } for slots. */
+  template: Array<string | { blankId: string }>;
+  pool: PuzzlePoolItem[];
+  blanks: PuzzleBlank[];
+  /** Pedagogic explanation after solving */
+  rationale: string;
+  /** Optional pointer back to a source section. */
+  sectionRef?: SectionRef;
 }
 
 export interface QuoteBlock {

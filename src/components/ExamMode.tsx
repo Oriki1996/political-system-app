@@ -2,17 +2,23 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X, ChevronLeft, ChevronRight, GraduationCap,
-  Check, RotateCcw, Trophy, Flag, AlertCircle,
+  Check, RotateCcw, Trophy, Flag, AlertCircle, ExternalLink, Quote,
 } from "lucide-react";
 import type { ComprehensionQ } from "../types";
+import { recordWrong, recordRight } from "../lib/mistakes";
 
 interface ExamModeProps {
+  unitId: string;
   unitTitle: string;
   unitNumber: number;
   questions: ComprehensionQ[];
   /** how many questions to draw from the bank for one exam attempt. Default = all */
   examSize?: number;
+  /** Label for header — defaults to "מבחן יחידה" */
+  modeLabel?: string;
   onClose: () => void;
+  /** Optional: opens a section by id (for "back to source" in review) */
+  onOpenSection?: (sectionId: string) => void;
 }
 
 type Phase = "in-progress" | "submitted";
@@ -26,7 +32,10 @@ function shuffleArr<T>(arr: T[]): T[] {
   return a;
 }
 
-export default function ExamMode({ unitTitle, unitNumber, questions, examSize, onClose }: ExamModeProps) {
+export default function ExamMode({
+  unitId, unitTitle, unitNumber, questions, examSize,
+  modeLabel = "מבחן יחידה", onClose, onOpenSection,
+}: ExamModeProps) {
   // Build the exam: random subset of N questions in random order
   const examQuestions = useMemo(() => {
     const pool = shuffleArr(questions);
@@ -79,6 +88,18 @@ export default function ExamMode({ unitTitle, unitNumber, questions, examSize, o
 
   function submit() {
     setConfirmSubmit(false);
+    // Persist mistakes/right answers for Smart Practice
+    examQuestions.forEach((qq, i) => {
+      const a = answers[i];
+      if (!qq.id) return;
+      if (a === undefined) {
+        recordWrong(unitId, qq.id); // skipped = wrong
+      } else if (a === qq.correct) {
+        recordRight(unitId, qq.id);
+      } else {
+        recordWrong(unitId, qq.id);
+      }
+    });
     setPhase("submitted");
     setIdx(0);
   }
@@ -114,7 +135,7 @@ export default function ExamMode({ unitTitle, unitNumber, questions, examSize, o
 
           <div className="flex items-center gap-2 text-amber-700 dark:text-amber-300 font-bold text-sm">
             <GraduationCap size={18} />
-            <span>מבחן יחידה {String(unitNumber).padStart(2, "0")}</span>
+            <span>{modeLabel} {String(unitNumber).padStart(2, "0")}</span>
           </div>
 
           {phase === "in-progress" ? (
@@ -170,6 +191,7 @@ export default function ExamMode({ unitTitle, unitNumber, questions, examSize, o
             onJump={setIdx}
             onReset={reset}
             onClose={onClose}
+            onOpenSection={onOpenSection}
           />
         )}
       </div>
@@ -356,7 +378,7 @@ function ExamQuestion({
 // ----------------------------------------------------------------------
 
 function ExamReview({
-  questions, answers, scorePercent, correctCount, total, currentIdx, onJump, onReset, onClose,
+  questions, answers, scorePercent, correctCount, total, currentIdx, onJump, onReset, onClose, onOpenSection,
 }: {
   questions: ComprehensionQ[];
   answers: Record<number, number>;
@@ -367,6 +389,7 @@ function ExamReview({
   onJump: (i: number) => void;
   onReset: () => void;
   onClose: () => void;
+  onOpenSection?: (sectionId: string) => void;
 }) {
   const grade =
     scorePercent >= 90 ? { label: "מצוין", emoji: "🏆", color: "emerald" } :
@@ -494,6 +517,33 @@ function ExamReview({
                   <p className="text-sm text-rose-900 dark:text-rose-100 leading-relaxed">
                     {q.optionExplanations[a]}
                   </p>
+                </div>
+              )}
+
+              {/* Source reference: quote + "back to section" */}
+              {q.sectionRef && (
+                <div className="mt-2 mr-10 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-3">
+                  <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300 text-xs font-bold mb-1.5">
+                    <Quote size={12} /> מקור בקטע
+                  </div>
+                  {q.sectionRef.quote && (
+                    <p className="text-[13px] italic text-slate-700 dark:text-slate-200 leading-relaxed border-r-2 border-slate-300 dark:border-slate-600 pr-3 mb-2">
+                      "{q.sectionRef.quote}"
+                    </p>
+                  )}
+                  {onOpenSection && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onClose();
+                        onOpenSection(q.sectionRef!.sectionId);
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-700 dark:text-brand-300 hover:text-brand-900 dark:hover:text-brand-100 transition-colors"
+                    >
+                      <ExternalLink size={12} />
+                      חזרה לקטע במקור — תרגול נוסף בחומר
+                    </button>
+                  )}
                 </div>
               )}
             </motion.div>

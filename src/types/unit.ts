@@ -1,4 +1,4 @@
-import type { RichSection, ComprehensionQ, KeyTerm } from "./content";
+import type { RichSection, ComprehensionQ, KeyTerm, Puzzle } from "./content";
 
 export type UnitStatus = "ready" | "in-progress" | "placeholder";
 
@@ -26,4 +26,6 @@ export interface Unit extends UnitMeta {
   /** Combined exam pool — random sampling for unit exam */
   examBank?: ComprehensionQ[];
   keyTerms?: KeyTerm[];
+  /** Gap-fill puzzles for case-application practice */
+  puzzles?: Puzzle[];
 }
