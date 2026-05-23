@@ -1,7 +1,11 @@
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Lock, BookOpen, Sparkles, ChevronLeft } from "lucide-react";
 import { UNITS } from "../content";
 import type { Unit } from "../types";
+import { getUnitScore } from "../lib/scoring";
+import { useSettings } from "../lib/settings";
+import ScoreChip from "./ScoreChip";
 
 interface Props {
   onPickUnit: (id: string) => void;
@@ -14,8 +18,30 @@ const STATUS_BADGE = {
 };
 
 export default function Dashboard({ onPickUnit }: Props) {
+  const { settings } = useSettings();
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const onChange = () => setTick((t) => t + 1);
+    window.addEventListener("psi-score-changed", onChange);
+    return () => window.removeEventListener("psi-score-changed", onChange);
+  }, []);
+
+  const totalScore = useMemo(() => {
+    let earned = 0;
+    let possible = 0;
+    for (const u of UNITS) {
+      if (u.examBank?.length) {
+        const s = getUnitScore(u.id, u.examBank);
+        earned += s.earned;
+        possible += s.possible;
+      }
+    }
+    return { earned, possible };
+  }, [tick]);
+
   return (
-    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
+    <main id="main" role="main" className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-8">
       {/* Hero */}
       <motion.section
         initial={{ opacity: 0, y: 8 }}
@@ -26,7 +52,7 @@ export default function Dashboard({ onPickUnit }: Props) {
           <div className="rounded-2xl bg-gradient-to-br from-brand-500 to-accent-500 p-3.5 text-white shadow-soft shrink-0">
             <BookOpen size={26} />
           </div>
-          <div>
+          <div className="flex-1">
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
               מערכת פוליטית ישראלית
             </h1>
@@ -36,6 +62,15 @@ export default function Dashboard({ onPickUnit }: Props) {
             <div className="text-xs text-slate-500 dark:text-slate-400 mt-2">
               פרופ' דורון נבות · אוניברסיטת חיפה · תשפ"ו ב'
             </div>
+            {settings.scoringEnabled && totalScore.possible > 0 && (
+              <div className="mt-3">
+                <ScoreChip
+                  earned={totalScore.earned}
+                  possible={totalScore.possible}
+                  label={`ניקוד כללי בכל היחידות: ${totalScore.earned} מתוך ${totalScore.possible}`}
+                />
+              </div>
+            )}
           </div>
         </div>
       </motion.section>
@@ -73,6 +108,19 @@ export default function Dashboard({ onPickUnit }: Props) {
 function UnitCard({ unit, index, onClick }: { unit: Unit; index: number; onClick: () => void }) {
   const locked = unit.status === "placeholder";
   const badge = STATUS_BADGE[unit.status];
+  const { settings } = useSettings();
+  const [tick, setTick] = useState(0);
+
+  useEffect(() => {
+    const onChange = () => setTick((t) => t + 1);
+    window.addEventListener("psi-score-changed", onChange);
+    return () => window.removeEventListener("psi-score-changed", onChange);
+  }, []);
+
+  const score = useMemo(
+    () => (unit.examBank?.length ? getUnitScore(unit.id, unit.examBank) : null),
+    [unit.id, unit.examBank, tick],
+  );
 
   return (
     <motion.button
@@ -82,7 +130,12 @@ function UnitCard({ unit, index, onClick }: { unit: Unit; index: number; onClick
       whileHover={!locked ? { y: -3 } : undefined}
       onClick={locked ? undefined : onClick}
       disabled={locked}
-      className={`card text-right group relative overflow-hidden ${
+      aria-label={`יחידה ${unit.number}: ${unit.title} — ${badge.label}${
+        settings.scoringEnabled && score && score.possible > 0
+          ? `. ניקוד: ${score.earned} מתוך ${score.possible}`
+          : ""
+      }`}
+      className={`card text-right group relative overflow-hidden focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:outline-none ${
         locked ? "opacity-70 cursor-not-allowed" : "cursor-pointer hover:shadow-soft"
       }`}
     >
@@ -94,16 +147,20 @@ function UnitCard({ unit, index, onClick }: { unit: Unit; index: number; onClick
             alt=""
             className="w-full h-full object-cover opacity-40 mix-blend-overlay"
             onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
+            aria-hidden="true"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" aria-hidden="true" />
         <div className="absolute top-3 right-4 text-white">
           <div className="text-3xl font-extrabold drop-shadow-md">{String(unit.number).padStart(2, "0")}</div>
         </div>
-        <div className="absolute top-3 left-4">
+        <div className="absolute top-3 left-4 flex flex-col items-end gap-1">
           <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${badge.className}`}>
             {badge.label}
           </span>
+          {settings.scoringEnabled && score && score.possible > 0 && score.earned > 0 && (
+            <ScoreChip earned={score.earned} possible={score.possible} size="sm" />
+          )}
         </div>
       </div>
 

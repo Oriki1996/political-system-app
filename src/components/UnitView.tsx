@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Target, Compass, FileText, ChevronDown, BookOpen,
   Users, Globe2, AlertTriangle, Brain, Layers, Lightbulb,
-  GraduationCap, Puzzle as PuzzleIcon, Sparkles,
+  GraduationCap, Puzzle as PuzzleIcon, Sparkles, Trophy,
 } from "lucide-react";
 import type { Unit, KeyTerm } from "../types";
 import Honeycomb, { autoColor, type HoneycombItem } from "./Honeycomb";
@@ -11,12 +11,15 @@ import SectionDrawer from "./SectionDrawer";
 import ExamMode from "./ExamMode";
 import PuzzleMode from "./PuzzleMode";
 import { getMistakeIds, getMistakeCount } from "../lib/mistakes";
+import { getUnitScore } from "../lib/scoring";
+import { useSettings } from "../lib/settings";
 
 const SECTION_ICONS = [Layers, Brain, Users, Globe2, AlertTriangle, BookOpen, Lightbulb, Compass];
 
 export default function UnitView({ unit }: { unit: Unit }) {
   const isPlaceholder = unit.status === "placeholder";
   const sections = unit.sections || [];
+  const { settings } = useSettings();
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const [visited, setVisited] = useState<Set<number>>(new Set());
   const [objectivesOpen, setObjectivesOpen] = useState(false);
@@ -24,16 +27,28 @@ export default function UnitView({ unit }: { unit: Unit }) {
   const [smartOpen, setSmartOpen] = useState(false);
   const [puzzleOpen, setPuzzleOpen] = useState(false);
   const [mistakeCount, setMistakeCount] = useState(0);
+  const [scoreTick, setScoreTick] = useState(0);
 
   const examBank = unit.examBank || [];
   const puzzles = unit.puzzles || [];
   const hasExam = examBank.length > 0;
   const hasPuzzles = puzzles.length > 0;
 
-  // Re-check mistakes on each render after exams close
+  // Re-check mistakes + listen for score changes
   useEffect(() => {
     setMistakeCount(getMistakeCount(unit.id));
   }, [unit.id, examOpen, smartOpen]);
+
+  useEffect(() => {
+    const onChange = () => setScoreTick((t) => t + 1);
+    window.addEventListener("psi-score-changed", onChange);
+    return () => window.removeEventListener("psi-score-changed", onChange);
+  }, []);
+
+  const unitScore = useMemo(
+    () => getUnitScore(unit.id, examBank),
+    [unit.id, examBank, scoreTick, examOpen, smartOpen],
+  );
 
   const mistakeQuestions = useMemo(() => {
     const ids = getMistakeIds(unit.id);
@@ -70,12 +85,13 @@ export default function UnitView({ unit }: { unit: Unit }) {
   const sectionTotal = sections.length;
 
   return (
-    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-5">
+    <main id="main" className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-5" role="main">
       {/* Compact hero */}
       <motion.section
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         className="card overflow-hidden"
+        aria-labelledby="unit-title"
       >
         {unit.heroImage && (
           <div className={`h-28 sm:h-36 bg-gradient-to-bl ${unit.color || "from-brand-500 to-accent-500"} relative`}>
@@ -84,17 +100,29 @@ export default function UnitView({ unit }: { unit: Unit }) {
               alt=""
               className="w-full h-full object-cover opacity-40 mix-blend-overlay"
               onError={(e) => ((e.target as HTMLImageElement).style.display = "none")}
+              aria-hidden="true"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" aria-hidden="true" />
             <div className="absolute bottom-3 right-4 text-white">
               <div className="text-xs font-bold opacity-90">יחידה {String(unit.number).padStart(2, "0")}</div>
-              <div className="text-base font-extrabold drop-shadow">{unit.title}</div>
+              <div id="unit-title" className="text-base font-extrabold drop-shadow">{unit.title}</div>
             </div>
-            {sectionTotal > 0 && (
-              <div className="absolute top-3 left-4 text-white/95 text-xs font-bold bg-black/30 backdrop-blur-sm rounded-full px-2.5 py-1">
-                {visitedCount} / {sectionTotal} קטעים
-              </div>
-            )}
+            <div className="absolute top-3 left-4 flex flex-col items-end gap-1">
+              {settings.scoringEnabled && unitScore.possible > 0 && (
+                <div
+                  className="inline-flex items-center gap-1 bg-amber-400/90 text-amber-950 backdrop-blur-sm rounded-full px-2.5 py-1 text-xs font-extrabold shadow-md"
+                  aria-label={`ניקוד יחידה: ${unitScore.earned} מתוך ${unitScore.possible} נקודות`}
+                >
+                  <Trophy size={11} aria-hidden="true" />
+                  <span className="tabular-nums">{unitScore.earned}<span className="opacity-70">/{unitScore.possible}</span></span>
+                </div>
+              )}
+              {sectionTotal > 0 && (
+                <div className="text-white/95 text-xs font-bold bg-black/30 backdrop-blur-sm rounded-full px-2.5 py-1">
+                  {visitedCount} / {sectionTotal} קטעים
+                </div>
+              )}
+            </div>
           </div>
         )}
         <div className="p-5">

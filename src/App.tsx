@@ -1,25 +1,101 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Header from "./components/Header";
 import Dashboard from "./components/Dashboard";
 import UnitView from "./components/UnitView";
 import Login from "./components/Login";
+import SettingsPanel from "./components/SettingsPanel";
+import AccessibilityStatement from "./components/AccessibilityStatement";
 import { AuthProvider, useAuth } from "./lib/auth";
+import { SettingsProvider } from "./lib/settings";
 import { UNITS } from "./content";
+import { getUnitScore } from "./lib/scoring";
 
-type Route = { view: "dashboard" } | { view: "unit"; id: string };
+type Route =
+  | { view: "dashboard" }
+  | { view: "unit"; id: string }
+  | { view: "accessibility" };
+
+function readRouteFromUrl(): Route {
+  const path = window.location.pathname;
+  if (path === "/accessibility") return { view: "accessibility" };
+  const m = path.match(/^\/unit\/(unit\d+)$/);
+  if (m) return { view: "unit", id: m[1] };
+  return { view: "dashboard" };
+}
+
+function urlForRoute(r: Route): string {
+  if (r.view === "accessibility") return "/accessibility";
+  if (r.view === "unit") return `/unit/${r.id}`;
+  return "/";
+}
 
 function Shell() {
   const { profile, loading } = useAuth();
-  const [route, setRoute] = useState<Route>({ view: "dashboard" });
+  const [route, setRouteState] = useState<Route>(() => readRouteFromUrl());
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [tick, setTick] = useState(0);
+
+  // Sync route with URL (back/forward navigation)
+  useEffect(() => {
+    const onPop = () => setRouteState(readRouteFromUrl());
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const setRoute = (r: Route) => {
+    const url = urlForRoute(r);
+    if (window.location.pathname !== url) {
+      window.history.pushState({}, "", url);
+    }
+    setRouteState(r);
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [route]);
 
+  // Listen to score changes (for Header global chip)
+  useEffect(() => {
+    const onChange = () => setTick((t) => t + 1);
+    window.addEventListener("psi-score-changed", onChange);
+    return () => window.removeEventListener("psi-score-changed", onChange);
+  }, []);
+
+  const totalScore = useMemo(() => {
+    let earned = 0;
+    let possible = 0;
+    for (const u of UNITS) {
+      if (u.examBank?.length) {
+        const s = getUnitScore(u.id, u.examBank);
+        earned += s.earned;
+        possible += s.possible;
+      }
+    }
+    return { earned, possible };
+  }, [tick]);
+
   if (loading) {
     return (
-      <div className="min-h-[100dvh] grid place-items-center">
+      <div className="min-h-[100dvh] grid place-items-center" role="status" aria-live="polite">
         <div className="text-slate-500 dark:text-slate-400 animate-pulse">טוען...</div>
+      </div>
+    );
+  }
+
+  // Accessibility statement is accessible even without login
+  if (route.view === "accessibility") {
+    return (
+      <div className="min-h-screen">
+        <SkipLink />
+        <Header
+          onHome={() => setRoute({ view: "dashboard" })}
+          showBack
+          onOpenSettings={() => setSettingsOpen(true)}
+          totalScore={totalScore}
+        />
+        <AccessibilityStatement onBack={() => setRoute({ view: "dashboard" })} />
+        <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+        <SiteFooter onAccessibility={() => setRoute({ view: "accessibility" })} />
       </div>
     );
   }
@@ -32,23 +108,74 @@ function Shell() {
 
   return (
     <div className="min-h-screen">
-      <Header onHome={goHome} showBack={route.view !== "dashboard"} />
+      <SkipLink />
+      <Header
+        onHome={goHome}
+        showBack={route.view !== "dashboard"}
+        onOpenSettings={() => setSettingsOpen(true)}
+        totalScore={totalScore}
+      />
       {route.view === "dashboard" ? (
         <Dashboard onPickUnit={(id) => setRoute({ view: "unit", id })} />
       ) : (
         <UnitView unit={UNITS.find((u) => u.id === route.id)!} />
       )}
-      <footer className="max-w-5xl mx-auto px-4 sm:px-6 py-8 text-center text-xs text-slate-500 dark:text-slate-500">
-        מבוסס על שמעוני 2001 ומאמרי החובה האחרים בסילבוס · עיצוב למידה אישי לאורי בן-דוד
-      </footer>
+      <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <SiteFooter onAccessibility={() => setRoute({ view: "accessibility" })} />
     </div>
+  );
+}
+
+function SkipLink() {
+  return (
+    <a
+      href="#main"
+      className="skip-link"
+      onClick={(e) => {
+        e.preventDefault();
+        const main = document.getElementById("main");
+        if (main) {
+          main.setAttribute("tabindex", "-1");
+          main.focus();
+        }
+      }}
+    >
+      דלג ישירות לתוכן הראשי
+    </a>
+  );
+}
+
+function SiteFooter({ onAccessibility }: { onAccessibility: () => void }) {
+  return (
+    <footer className="max-w-5xl mx-auto px-4 sm:px-6 py-8 mt-8 text-center text-xs text-slate-500 dark:text-slate-500 border-t border-slate-200/60 dark:border-slate-800/60" role="contentinfo">
+      <div className="space-y-2">
+        <div>מבוסס על שמעוני 2001 ומאמרי החובה האחרים בסילבוס · עיצוב למידה אישי לאורי בן-דוד</div>
+        <div className="flex items-center justify-center gap-3">
+          <button
+            onClick={onAccessibility}
+            className="text-brand-700 dark:text-brand-300 hover:underline focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:outline-none rounded px-1"
+          >
+            הצהרת נגישות
+          </button>
+          <span aria-hidden="true">·</span>
+          <a
+            href="mailto:oribendavid1996@gmail.com"
+            className="text-brand-700 dark:text-brand-300 hover:underline focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:outline-none rounded px-1"
+          >
+            צרו קשר
+          </a>
+        </div>
+      </div>
+    </footer>
   );
 }
 
 export default function App() {
   return (
-    <AuthProvider>
-      <Shell />
-    </AuthProvider>
+    <SettingsProvider>
+      <AuthProvider>
+        <Shell />
+      </AuthProvider>
+    </SettingsProvider>
   );
 }

@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import type { ComprehensionQ } from "../types";
 import { recordWrong, recordRight } from "../lib/mistakes";
+import { recordAttempt } from "../lib/scoring";
 
 interface ExamModeProps {
   unitId: string;
@@ -88,17 +89,19 @@ export default function ExamMode({
 
   function submit() {
     setConfirmSubmit(false);
-    // Persist mistakes/right answers for Smart Practice
+    // Persist mistakes/right answers for Smart Practice + score
     examQuestions.forEach((qq, i) => {
       const a = answers[i];
       if (!qq.id) return;
+      const gotItRight = a !== undefined && a === qq.correct;
       if (a === undefined) {
         recordWrong(unitId, qq.id); // skipped = wrong
-      } else if (a === qq.correct) {
+      } else if (gotItRight) {
         recordRight(unitId, qq.id);
       } else {
         recordWrong(unitId, qq.id);
       }
+      recordAttempt(unitId, qq, gotItRight);
     });
     setPhase("submitted");
     setIdx(0);
