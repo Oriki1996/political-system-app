@@ -3,11 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Target, Compass, FileText, ChevronDown, BookOpen,
   Users, Globe2, AlertTriangle, Brain, Layers, Lightbulb,
-  GraduationCap, Puzzle as PuzzleIcon, Sparkles, Trophy,
+  GraduationCap, Puzzle as PuzzleIcon, Sparkles, Trophy, Clock,
 } from "lucide-react";
 import type { Unit, KeyTerm } from "../types";
 import Honeycomb, { autoColor, type HoneycombItem } from "./Honeycomb";
 import SectionDrawer from "./SectionDrawer";
+import TimelineDrawer from "./TimelineDrawer";
 import ExamMode from "./ExamMode";
 import PuzzleMode from "./PuzzleMode";
 import { getMistakeIds, getMistakeCount } from "../lib/mistakes";
@@ -26,13 +27,18 @@ export default function UnitView({ unit }: { unit: Unit }) {
   const [examOpen, setExamOpen] = useState(false);
   const [smartOpen, setSmartOpen] = useState(false);
   const [puzzleOpen, setPuzzleOpen] = useState(false);
+  const [timelineOpen, setTimelineOpen] = useState(false);
   const [mistakeCount, setMistakeCount] = useState(0);
   const [scoreTick, setScoreTick] = useState(0);
 
   const examBank = unit.examBank || [];
   const puzzles = unit.puzzles || [];
+  const parts = unit.parts || [];
+  const timelineEvents = unit.timeline || [];
   const hasExam = examBank.length > 0;
   const hasPuzzles = puzzles.length > 0;
+  const hasParts = parts.length > 0;
+  const hasTimeline = timelineEvents.length > 0;
 
   // Re-check mistakes + listen for score changes
   useEffect(() => {
@@ -75,6 +81,24 @@ export default function UnitView({ unit }: { unit: Unit }) {
       })),
     [sections, visited],
   );
+
+  /** For grouped honeycomb: a list of { part, items, indexMap } */
+  const partGroups = useMemo(() => {
+    if (!hasParts) return [];
+    const idToIdx = new Map<string, number>();
+    sections.forEach((s, i) => idToIdx.set(s.id, i));
+    return parts.map((p) => {
+      const groupItems: { item: HoneycombItem; idx: number }[] = [];
+      for (const sid of p.sectionIds) {
+        const idx = idToIdx.get(sid);
+        if (idx !== undefined && honeycombItems[idx]) {
+          groupItems.push({ item: honeycombItems[idx], idx });
+        }
+      }
+      const visitedInPart = groupItems.filter((g) => visited.has(g.idx)).length;
+      return { part: p, items: groupItems, visitedInPart };
+    });
+  }, [hasParts, parts, sections, honeycombItems, visited]);
 
   function openSection(i: number) {
     setOpenIdx(i);
@@ -191,20 +215,65 @@ export default function UnitView({ unit }: { unit: Unit }) {
             <div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">בחר קטע לימוד</h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                לחץ על משושה — הקטע ייפתח במסך מלא עם שאלות הבנה
+                {hasParts
+                  ? `${parts.length} חלקים · ${sectionTotal} קטעים — לחץ על משושה לפתיחה`
+                  : "לחץ על משושה — הקטע ייפתח במסך מלא עם שאלות הבנה"}
               </p>
             </div>
-            <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
-              <kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-[10px] font-bold">→</kbd>
-              <kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-[10px] font-bold">←</kbd>
-              <span>בין קטעים</span>
-              <span className="text-slate-300 dark:text-slate-600">·</span>
-              <kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-[10px] font-bold">Esc</kbd>
-              <span>סגירה</span>
+            <div className="flex items-center gap-2 flex-wrap">
+              {hasTimeline && (
+                <button
+                  type="button"
+                  onClick={() => setTimelineOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-violet-100 dark:bg-violet-900/40 text-violet-800 dark:text-violet-200 hover:bg-violet-200 dark:hover:bg-violet-900/60 transition-colors text-xs font-extrabold focus-visible:ring-2 focus-visible:ring-violet-500"
+                  aria-label="פתח ציר זמן של היחידה"
+                >
+                  <Clock size={14} aria-hidden="true" />
+                  <span>📅 ציר זמן</span>
+                </button>
+              )}
+              <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                <kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-[10px] font-bold">→</kbd>
+                <kbd className="px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-[10px] font-bold">←</kbd>
+                <span>בין קטעים</span>
+              </div>
             </div>
           </div>
 
-          <Honeycomb items={honeycombItems} onSelect={openSection} />
+          {hasParts ? (
+            <div className="space-y-6 mt-4">
+              {partGroups.map(({ part, items, visitedInPart }, gi) => (
+                <div key={part.id} className="rounded-2xl border border-slate-200/70 dark:border-slate-800/60 p-3 sm:p-4 bg-slate-50/40 dark:bg-slate-900/30">
+                  <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
+                    <div className="flex-1 min-w-0">
+                      <div className="inline-flex items-center gap-2 mb-0.5">
+                        <span className="text-[10px] font-extrabold tracking-wider uppercase text-brand-700 dark:text-brand-300 bg-brand-100 dark:bg-brand-900/50 rounded-full px-2 py-0.5">
+                          חלק {gi + 1}
+                        </span>
+                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-slate-100">
+                          {part.title}
+                        </h3>
+                      </div>
+                      {part.subtitle && (
+                        <p className="text-[12px] text-slate-600 dark:text-slate-300 leading-snug">
+                          {part.subtitle}
+                        </p>
+                      )}
+                    </div>
+                    <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 tabular-nums shrink-0">
+                      {visitedInPart}/{items.length}
+                    </span>
+                  </div>
+                  <Honeycomb
+                    items={items.map((g) => g.item)}
+                    onSelect={(localIdx) => openSection(items[localIdx].idx)}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <Honeycomb items={honeycombItems} onSelect={openSection} />
+          )}
 
           {visitedCount > 0 && (
             <div className="mt-3 pt-4 border-t border-slate-200/60 dark:border-slate-800/60">
@@ -279,6 +348,7 @@ export default function UnitView({ unit }: { unit: Unit }) {
         section={openIdx !== null ? sections[openIdx] : null}
         index={openIdx ?? 0}
         total={sectionTotal}
+        keyTerms={unit.keyTerms}
         onClose={() => setOpenIdx(null)}
         onPrev={() => {
           if (openIdx !== null && openIdx > 0) {
@@ -295,6 +365,20 @@ export default function UnitView({ unit }: { unit: Unit }) {
           }
         }}
       />
+
+      {/* Timeline drawer */}
+      {hasTimeline && (
+        <TimelineDrawer
+          open={timelineOpen}
+          events={timelineEvents}
+          unitTitle={unit.title}
+          onClose={() => setTimelineOpen(false)}
+          onJumpToSection={(sid) => {
+            setTimelineOpen(false);
+            openSectionById(sid);
+          }}
+        />
+      )}
 
       {/* Exam overlay */}
       <AnimatePresence>

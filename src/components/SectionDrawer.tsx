@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, BookOpen } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, BookOpen, Lightbulb } from "lucide-react";
 import { useEffect } from "react";
-import type { RichSection } from "../types";
+import type { RichSection, KeyTerm } from "../types";
 import { RichLine } from "./RichText";
 import InlineCheckGallery from "./InlineCheckGallery";
+import ComparisonChart from "./ComparisonChart";
 
 interface SectionDrawerProps {
   section: RichSection | null;
@@ -12,6 +13,7 @@ interface SectionDrawerProps {
   onClose: () => void;
   onPrev: () => void;
   onNext: () => void;
+  keyTerms?: KeyTerm[];
 }
 
 const CALLOUT_BG: Record<string, string> = {
@@ -21,7 +23,7 @@ const CALLOUT_BG: Record<string, string> = {
   green: "bg-emerald-50/80 dark:bg-emerald-950/30 border-emerald-300/50 dark:border-emerald-700/40 text-emerald-900 dark:text-emerald-100",
 };
 
-export default function SectionDrawer({ section, index, total, onClose, onPrev, onNext }: SectionDrawerProps) {
+export default function SectionDrawer({ section, index, total, onClose, onPrev, onNext, keyTerms }: SectionDrawerProps) {
   useEffect(() => {
     if (section) {
       const prev = document.body.style.overflow;
@@ -120,11 +122,36 @@ export default function SectionDrawer({ section, index, total, onClose, onPrev, 
                 {section.heading}
               </h2>
 
+              {section.tldr && (
+                <div className="mb-5 rounded-2xl border-2 border-amber-300/70 dark:border-amber-600/50 bg-gradient-to-bl from-amber-50 to-yellow-50/60 dark:from-amber-950/40 dark:to-yellow-950/30 p-4 sm:p-5">
+                  <div className="flex items-center gap-2 mb-1.5 text-amber-800 dark:text-amber-200">
+                    <Lightbulb size={16} aria-hidden="true" />
+                    <span className="text-xs font-extrabold uppercase tracking-wide">הנקודה המרכזית</span>
+                  </div>
+                  <p className="text-[15px] leading-[1.85] text-slate-800 dark:text-slate-100 font-medium">
+                    {section.tldr}
+                  </p>
+                </div>
+              )}
+
               <div className="space-y-3.5">
                 {section.paragraphs.map((para, i) => (
-                  <RichLine key={i} segments={para} />
+                  <RichLine key={i} segments={para} keyTerms={keyTerms} />
                 ))}
               </div>
+
+              {section.comparison && (
+                <ComparisonChart
+                  title={section.comparison.title}
+                  leftTitle={section.comparison.leftTitle}
+                  leftSubtitle={section.comparison.leftSubtitle}
+                  rightTitle={section.comparison.rightTitle}
+                  rightSubtitle={section.comparison.rightSubtitle}
+                  leftColor={section.comparison.leftColor}
+                  rightColor={section.comparison.rightColor}
+                  rows={section.comparison.rows}
+                />
+              )}
 
               {section.quote && (
                 <figure className="my-5 pr-4 border-r-4 border-brand-400 dark:border-brand-600">

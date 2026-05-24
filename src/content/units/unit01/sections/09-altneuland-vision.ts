@@ -3,6 +3,7 @@ import type { RichSection } from "../../../../types";
 export const section: RichSection = {
   id: "u01-s09",
   heading: "חזון אלטנוילנד — מדינה אירופית-מודלית",
+  tldr: "אלטנוילנד = 'מדינת יהודים' לא 'מדינה יהודית' — גרמנית כשפה שלטת, חברה אירופית-פלורליסטית. ההיגיון הפונקציונלי בצורה הטהורה.",
   paragraphs: [
     [
       { text: "אם " },

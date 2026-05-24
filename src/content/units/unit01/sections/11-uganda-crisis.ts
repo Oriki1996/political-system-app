@@ -3,6 +3,7 @@ import type { RichSection } from "../../../../types";
 export const section: RichSection = {
   id: "u01-s11",
   heading: "משבר אוגנדה 1903 — מבחן התפיסה הפונקציונלית",
+  tldr: "משבר אוגנדה 1903 = מבחן צרוף של הציר פונקציונלי/אורגני. הרצל מציע לבדוק; אוסישקין דוחה כל חלופה. ITO פרשו כי לקחו פונקציונליות עד הסוף.",
   paragraphs: [
     [
       { text: "בקיץ " },
