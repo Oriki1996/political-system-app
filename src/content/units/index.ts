@@ -1,5 +1,6 @@
 import type { Unit, UnitMeta } from "../../types";
 import { unit01 } from "./unit01";
+import { unit02 } from "./unit02";
 
 const PALETTE = [
   "from-sky-500 to-indigo-600",
@@ -29,7 +30,6 @@ function placeholder(num: number, title: string, subtitle: string, articles: str
 }
 
 const placeholders: Unit[] = [
-  placeholder(2, "מושגים וגישות לחקר הפוליטיקה והחברה הישראלית", "שלו 2006 — עת לתיאוריה", ["שלו 2006"]),
   placeholder(3, "תקופת היישוב", "נתניהו ב' (ז'בוטינסקי) + שפירא 1998", ["נתניהו, זאב ז'בוטינסקי", "שפירא 1998"]),
   placeholder(4, "צמיחתה של המדינה החזקה", "חריס 1997 + שלו 1994", ["חריס 1997", "שלו 1994"]),
   placeholder(5, "המהפך 1977", "גולדשטיין 2011 — בגין", ["גולדשטיין 2011"]),
@@ -40,4 +40,4 @@ const placeholders: Unit[] = [
   placeholder(10, "המשבר הפוליטי 2019-2022", "נבות וגולדשמידט", ["נבות וגולדשמידט"]),
 ];
 
-export const UNITS: Unit[] = [unit01, ...placeholders];
+export const UNITS: Unit[] = [unit01, unit02, ...placeholders];
