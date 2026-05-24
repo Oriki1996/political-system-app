@@ -14,6 +14,7 @@ import PuzzleMode from "./PuzzleMode";
 import { getMistakeIds, getMistakeCount } from "../lib/mistakes";
 import { getUnitScore } from "../lib/scoring";
 import { useSettings } from "../lib/settings";
+import { timelineForUnit } from "../content/timeline";
 
 const SECTION_ICONS = [Layers, Brain, Users, Globe2, AlertTriangle, BookOpen, Lightbulb, Compass];
 
@@ -34,7 +35,7 @@ export default function UnitView({ unit }: { unit: Unit }) {
   const examBank = unit.examBank || [];
   const puzzles = unit.puzzles || [];
   const parts = unit.parts || [];
-  const timelineEvents = unit.timeline || [];
+  const timelineEvents = useMemo(() => timelineForUnit(unit.id), [unit.id]);
   const hasExam = examBank.length > 0;
   const hasPuzzles = puzzles.length > 0;
   const hasParts = parts.length > 0;

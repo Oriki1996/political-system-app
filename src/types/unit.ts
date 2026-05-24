@@ -32,7 +32,10 @@ export interface TimelineEvent {
   description?: string;
   /** Category for color coding */
   category?: "functional" | "organic" | "synthesis" | "crisis" | "general";
+  /** Section the event references (e.g. "u01-s17"). Used for "jump to section" + filtering by unit. */
   sectionRef?: string;
+  /** Unit id the event belongs to (e.g. "unit01"). Derived from sectionRef when omitted. */
+  unitId?: string;
 }
 
 export interface Unit extends UnitMeta {
@@ -50,6 +53,4 @@ export interface Unit extends UnitMeta {
   puzzles?: Puzzle[];
   /** Pedagogical grouping of sections into 3-5 parts */
   parts?: UnitPart[];
-  /** Chronological events for timeline visualization */
-  timeline?: TimelineEvent[];
 }
