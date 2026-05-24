@@ -3,6 +3,7 @@ import type { RichSection } from "../../../../types";
 export const section: RichSection = {
   id: "u01-s10",
   heading: "דרכו של הרצל — מ-negotiorum gestio להסתדרות הציונית",
+  tldr: "negotiorum gestio = הצדקה משפטית-רומית לפעולה בשם העם בלי הסכמתו המפורשת. תכנית בזל מטשטשת טקטית 'מדינה' ל'בית מולדת'.",
   paragraphs: [
     [
       { text: "שמעוני קובע: התרומה החשובה ביותר של הרצל לציונות " },

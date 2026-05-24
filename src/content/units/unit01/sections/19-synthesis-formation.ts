@@ -3,6 +3,7 @@ import type { RichSection } from "../../../../types";
 export const section: RichSection = {
   id: "u01-s19",
   heading: "היווצרות הסינתזה — אוסישקין, הלסינגפורס ועבודת ההווה",
+  tldr: "סינתזה = הכרה שאסטרטגיה חד-צדדית נכשלת. אוסישקין 'Unser Programm'. הלסינגפורס 1906 + Gegenwartsarbeit (עבודת ההווה בפזורה).",
   paragraphs: [
     [
       { text: "הלוגיקה של המעבר לסינתזה היא חשובה לעצמה. הסיפור אינו ש" },

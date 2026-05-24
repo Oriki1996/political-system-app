@@ -85,14 +85,29 @@ export interface CalloutBlock {
   text: string;
 }
 
+export interface ComparisonBlock {
+  title?: string;
+  leftTitle: string;
+  leftSubtitle?: string;
+  rightTitle: string;
+  rightSubtitle?: string;
+  leftColor?: "blue" | "emerald" | "violet" | "amber";
+  rightColor?: "blue" | "emerald" | "violet" | "amber";
+  rows: Array<{ axis: string; left: string; right: string }>;
+}
+
 export interface RichSection {
   id: string;
   heading: string;
   intro?: string;             // optional sub-heading or single intro line
+  /** 2-4 sentence "main point" summary, displayed at top of drawer */
+  tldr?: string;
   paragraphs: RichSegment[][];
   callout?: CalloutBlock;
   quote?: QuoteBlock;
   table?: TableBlock;
+  /** Optional side-by-side comparison chart */
+  comparison?: ComparisonBlock;
   comprehensionChecks?: ComprehensionQ[];
 }
 
@@ -102,4 +117,6 @@ export interface KeyTerm {
   english?: string;
   definition: string;
   category: SemanticTag;
+  /** strings that, when matched in segment text, trigger glossary tooltip */
+  triggers?: string[];
 }

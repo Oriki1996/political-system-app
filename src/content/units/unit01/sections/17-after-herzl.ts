@@ -3,6 +3,7 @@ import type { RichSection } from "../../../../types";
 export const section: RichSection = {
   id: "u01-s17",
   heading: "אחרי מות הרצל — המאבק הפנימי על דרכה של הציונות",
+  tldr: "מות הרצל (1904) → מאבק פוליטיים מול מעשיים. וולפסון יורש; ITO פרשו; מהפכת הטורקים (1908) מחלישה את הדיפלומטיה.",
   paragraphs: [
     [
       { text: "מותו של הרצל ב-" },
