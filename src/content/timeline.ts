@@ -41,6 +41,21 @@ export const courseTimeline: TimelineEvent[] = [
   { unitId: "unit02", year: "1995", label: "שטרנהל: 'בניין אומה או תיקון חברה'; אורי רם: 'הקהילה הסוציולוגית בישראל'", description: "שני ספרים שאתגרו את האסכולה השמרנית — אחד מבחוץ (שטרנהל) ואחד מבפנים (רם, סוציולוגיה של הידע).", category: "general", sectionRef: "u02-s05" },
   { unitId: "unit02", year: "1996", label: "ליסק: 'ביקורת המבקרים'", description: "התגובה השיטתית הראשונה של האסכולה השמרנית לסוציולוגיה הביקורתית — הופעת המאמר אפשרה לראשונה ויכוח מלומד.", category: "general", sectionRef: "u02-s02" },
   { unitId: "unit02", year: "2006", label: "שלו: 'עת לתיאוריה'", description: "מאמר התשובה של שלו לליסק — טיעון על 'קונצנזוס שמרני' שמסווה גם את הוויכוח עם שטרנהל.", category: "synthesis", sectionRef: "u02-s14" },
+
+  // ============= יחידה 07 — אוסלו והתמוטטות תנועת העבודה =============
+  { unitId: "unit07", year: "1992", label: "בחירות 1992 — רבין חוזר לשלטון", description: "מפלגת העבודה מקבלת 44 מנדטים. רבין מקים קואליציה משולשת: עבודה-מרצ + תמיכה חיצונית של המפלגות הערביות + ש\"ס.", category: "synthesis", sectionRef: "u07-s11" },
+  { unitId: "unit07", year: "1992", label: "הסכם הליסבון (אוקטובר)", description: "הסכם בהסתדרות שהוסיף גמלאות פנסיוניות לעובדים. מהלך של דמוקרטיזציה כלכלית.", category: "synthesis", sectionRef: "u07-s14" },
+  { unitId: "unit07", year: "1993", label: "הסכם אוסלו א'", description: "הכרה הדדית בין ישראל לאש\"פ. שלב ראשון בתהליך הדמוקרטיזציה הרב-ממדית.", category: "synthesis", sectionRef: "u07-s11" },
+  { unitId: "unit07", year: "1994", label: "חוק ביטוח בריאות ממלכתי", description: "בריאות אוניברסלית לכל אזרח. רכיב כלכלי-סוציאל-דמוקרטי של דרכו של רבין.", category: "synthesis", sectionRef: "u07-s14" },
+  { unitId: "unit07", year: "1995", label: "הסכם אוסלו ב' (ספטמבר)", description: "הסכם הביניים. גרינברג רואה בו את הטריגר המידי לרצח רבין.", category: "crisis", sectionRef: "u07-s12" },
+  { unitId: "unit07", year: "1995", label: "רצח רבין (4 בנובמבר)", description: "יגאל עמיר יורה ברבין בכיכר מלכי ישראל. ההצלחה הפוליטית של הקואליציה הלאומנית.", category: "crisis", sectionRef: "u07-s12" },
+  { unitId: "unit07", year: "1996", label: "בחירות 1996 — ניצחון נתניהו (מאי)", description: "נתניהו מנצח את פרס בפער של 30,000 קולות. שיתוק תהליך אוסלו.", category: "crisis", sectionRef: "u07-s13" },
+  { unitId: "unit07", year: "1997", label: "בלייר ו'הדרך השלישית'", description: "טוני בלייר עולה לשלטון בבריטניה. אידיאולוגיה של 'דרך שלישית' שמשפיעה על בן-עמי ועל ברק.", category: "general", sectionRef: "u07-s03" },
+  { unitId: "unit07", year: "1998", label: "בן-עמי: 'מקום לכולם'", description: "ספר הבסיס הרעיוני לקמפיין ברק 1999. גוטוויין מנתח אותו כ'מסמך הכשר רעיוני' לנאו-ליברליזם.", category: "general", sectionRef: "u07-s04" },
+  { unitId: "unit07", year: "1999", label: "בחירות 1999 — ניצחון ברק (מאי)", description: "ברק מנצח את נתניהו עם הסיסמה 'אני אהיה ראש ממשלה של כו-לם'. הקהל בכיכר רבין: 'רק לא ש\"ס'.", category: "synthesis", sectionRef: "u07-s08" },
+  { unitId: "unit07", year: "2000", label: "פסגת קמפ דייוויד (יולי)", description: "כישלון משא ומתן ברק-ערפאת-קלינטון. גרינברג מציין שזה לא היה 'המשכת דרכו של רבין'.", category: "crisis", sectionRef: "u07-s05" },
+  { unitId: "unit07", year: "2000", label: "גוטוויין: 'הדיאלקטיקה של כשל השוויון'; גרינברג: 'למה לא המשכנו בדרכו'", description: "שני המאמרים מתפרסמים — שני ניתוחים משלימים של הכישלון.", category: "general", sectionRef: "u07-s01" },
+  { unitId: "unit07", year: "2001", label: "ברק מפסיד לשרון (פברואר)", description: "בחירות מיוחדות לראש ממשלה. שרון 62%, ברק 38%. סוף תקופת ברק וכישלון 'הדרך השלישית'.", category: "crisis", sectionRef: "u07-s05" },
 ];
 
 /**
