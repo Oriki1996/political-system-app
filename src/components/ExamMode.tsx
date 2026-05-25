@@ -7,6 +7,7 @@ import {
 import type { ComprehensionQ } from "../types";
 import { recordWrong, recordRight } from "../lib/mistakes";
 import { recordAttempt } from "../lib/scoring";
+import { shuffleQuestionOptions } from "../lib/shuffleOptions";
 
 interface ExamModeProps {
   unitId: string;
@@ -37,10 +38,12 @@ export default function ExamMode({
   unitId, unitTitle, unitNumber, questions, examSize,
   modeLabel = "מבחן יחידה", onClose, onOpenSection,
 }: ExamModeProps) {
-  // Build the exam: random subset of N questions in random order
+  // Build the exam: random subset of N questions in random order,
+  // with each question's options re-shuffled per session (defeats position bias).
   const examQuestions = useMemo(() => {
     const pool = shuffleArr(questions);
-    return examSize ? pool.slice(0, examSize) : pool;
+    const sliced = examSize ? pool.slice(0, examSize) : pool;
+    return sliced.map(shuffleQuestionOptions);
   }, [questions, examSize]);
 
   const [idx, setIdx] = useState(0);
