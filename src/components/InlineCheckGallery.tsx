@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X, HelpCircle, Sparkles, ChevronRight, ChevronLeft, Brain, Eye, Target } from "lucide-react";
 import type { ComprehensionQ, QuestionLevel } from "../types";
+import { shuffleQuestionOptions } from "../lib/shuffleOptions";
 
 const LEVEL_META: Record<QuestionLevel, { label: string; color: string; Icon: typeof Brain }> = {
   recall: {
@@ -29,8 +30,14 @@ export default function InlineCheckGallery({ questions }: Props) {
   const [idx, setIdx] = useState(0);
   const [picked, setPicked] = useState<Record<number, number>>({});
 
-  if (questions.length === 0) return null;
-  const q = questions[idx];
+  // Shuffle each question's options once per mount to defeat position bias.
+  const shuffledQuestions = useMemo(
+    () => questions.map(shuffleQuestionOptions),
+    [questions],
+  );
+
+  if (shuffledQuestions.length === 0) return null;
+  const q = shuffledQuestions[idx];
   const cur = picked[idx];
   const showResult = cur !== undefined;
   const levelMeta = q.level ? LEVEL_META[q.level] : undefined;
@@ -75,7 +82,7 @@ export default function InlineCheckGallery({ questions }: Props) {
             <div className="flex gap-1 mx-1">
               {questions.map((_, i) => {
                 const answered = picked[i] !== undefined;
-                const isCorrect = answered && picked[i] === questions[i].correct;
+                const isCorrect = answered && picked[i] === shuffledQuestions[i].correct;
                 return (
                   <button
                     key={i}
