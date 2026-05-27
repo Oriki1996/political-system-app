@@ -70,6 +70,22 @@ export const courseTimeline: TimelineEvent[] = [
   { unitId: "unit08", year: "1995", label: "אי-אמון על הפקעת קרקעות (מאי)", description: "המפלגות הערביות מגישות הצעת אי-אמון על הפקעת 500 דונם במזרח ירושלים. רבין שורד, אך לראשונה הליכוד מוכן 'להפיל ממשלה עם ערבים' — לגיטימציה למפלגות ערביות כשחקני קואליציה.", category: "synthesis", sectionRef: "u08-s11" },
   { unitId: "unit08", year: "1996", label: "בחירות 1996 — פיצול הצבעה", description: "94.8% מהמצביעים הערבים בחרו בפרס לראשות הממשלה אך פוצלו לכנסת (חד\"ש 37%, מד\"ע 25%). בשארה: 'זהות שסועה הופכת לגיטימית'.", category: "synthesis", sectionRef: "u08-s13" },
   { unitId: "unit08", year: "1996", label: "בשארה: 'הערבי הישראלי: עיונים בשיח פוליטי שסוע'", description: "המאמר מתפרסם בספר 'ציונות: פולמוס בן-זמננו'. תזת 'הישראליזציה השסועה' מוצגת.", category: "general", sectionRef: "u08-s01" },
+
+  // ============= יחידה 09 — התבססות הימין בשלטון (גוטוויין 2016 + Sorek 2021) =============
+  { unitId: "unit09", year: "1977", label: "מהפך 1977 — תחילת משטר ההפרטה", description: "ניצחון בגין. תחילת פירוק מדינת הרווחה. גוטוויין: ההתנחלויות הופכות למנגנון פיצוי לנפגעי ההפרטה.", category: "general", sectionRef: "u09-s02" },
+  { unitId: "unit09", year: "1980", label: "המהפך במדיניות השיכון בהתנחלויות", description: "מחקר ארז מגור: ראשית שנות ה-80 — תקציבים נדיבים לבנייה ברת-השגה ותשתיות מתקדמות. ההתנחלויות הופכות יעד הגירה מושך.", category: "general", sectionRef: "u09-s05" },
+  { unitId: "unit09", year: "2003", label: "נתניהו שר אוצר — קיצוצים", description: "תכנית מעוף. קיצוצים בקצבאות. תמיכת חרדים ומסורתיים-מזרחים בנתניהו צונחת (לפי Sorek).", category: "crisis", sectionRef: "u09-s13" },
+  { unitId: "unit09", year: "2009", label: "נתניהו חוזר לראשות הממשלה", description: "תחילת עידן 'שלטון הנאמנות' לפי גוטוויין. תקופת הניתוח של Sorek & Ceobanu (2009-2021).", category: "synthesis", sectionRef: "u09-s08" },
+  { unitId: "unit09", year: "2011", label: "מחאת האוהלים (יולי-ספטמבר)", description: "מחאה חברתית גדולה. גוטוויין: ביטוי של 'המעמד הפגיע' (precariat) שמנגנון הפיצוי של ההתנחלויות כבר לא מספק לו.", category: "crisis", sectionRef: "u09-s04" },
+  { unitId: "unit09", year: "2011", label: "חוק החרם נחקק (יולי)", description: "מאפשר תביעות אזרחיות נגד הקוראים לחרם על ישראל או על ההתנחלויות. אחד מחוקי הנאמנות הראשונים.", category: "crisis", sectionRef: "u09-s09" },
+  { unitId: "unit09", year: "2011", label: "חוק הנכבה", description: "מאפשר לפגוע בתקציבי מוסדות המציינים את הנכבה ביום העצמאות. גוטוויין: פיקוח על הזיכרון הציבורי.", category: "crisis", sectionRef: "u09-s09" },
+  { unitId: "unit09", year: "2014", label: "מחירי הדיור בהתנחלויות עלו ל-90% מישראל", description: "שחיקת היתרון של ההתנחלויות. מחירי דירה ממוצעת בהתנחלויות = 90% מישראל גופא. מנגנון הפיצוי נשחק.", category: "general", sectionRef: "u09-s03" },
+  { unitId: "unit09", year: "2015", label: "בחירות 2015 — ניצחון נתניהו", description: "ניצחון מוחץ של הימין. הצבעה מעמדית מובהקת: SAJ → שמאל, חרדים+מסורתיים-מזרחים+מעמד פגיע → ליכוד.", category: "synthesis", sectionRef: "u09-s06" },
+  { unitId: "unit09", year: "2018", label: "חוק יסוד: הלאום", description: "החוק שמטמיע את עליונות האופי היהודי של המדינה מעל ערך השוויון. גוטוויין: חוק שלטון הנאמנות המרכזי — מקנה ליהדות 'ערך כלכלי'.", category: "synthesis", sectionRef: "u09-s09" },
+  { unitId: "unit09", year: "2019", label: "תחילת סדרת בחירות 2019-2021 (4 בשנתיים)", description: "המשבר הפוליטי שמתחיל סביב משפט נתניהו. Sorek & Ceobanu: דמותו של נתניהו הופכת ל'סמל מגייס' שמחליף דיון מבני.", category: "crisis", sectionRef: "u09-s12" },
+  { unitId: "unit09", year: "2020", label: "מחאת בלפור (יולי)", description: "מחאה שבועית בבלפור ובגשרים. סקר IDI: 80% מהמפגינים = חילונים. Sorek: ביטוי לקריסת הגמוניית ה-SAJ והתמקדות סמלית בנתניהו.", category: "crisis", sectionRef: "u09-s14" },
+  { unitId: "unit09", year: "2021", label: "Sorek & Ceobanu מפרסמים את המחקר", description: "מאמר ב-Ethnic and Racial Studies: 'Benjamin Netanyahu as a mobilizing symbol'. הניתוח הסמלי-כמותי המקיף הראשון.", category: "general", sectionRef: "u09-s12" },
+  { unitId: "unit09", year: "2023", label: "ההפיכה המשטרית", description: "הקמת ממשלת נתניהו השישית (דצמבר 2022) ויוזמת לוין-רוטמן (ינואר 2023). יישום קיצוני של חזון 'שלטון הנאמנות' של גוטוויין.", category: "crisis", sectionRef: "u09-s11" },
 ];
 
 /**
