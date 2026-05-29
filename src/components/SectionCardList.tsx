@@ -116,7 +116,7 @@ function SectionCard({
           )}
 
           {/* Metadata row */}
-          <div className="mt-2.5 flex items-center gap-3 text-[11px] text-slate-500 dark:text-slate-400 flex-wrap">
+          <div className="mt-2.5 flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 flex-wrap">
             {questionCount > 0 && (
               <span className="inline-flex items-center gap-1 font-bold">
                 <Brain size={11} aria-hidden="true" />

@@ -62,10 +62,10 @@ export default function SectionDrawer({ section, index, total, onClose, onPrev, 
                 type="button"
                 onClick={onClose}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors font-bold text-sm"
-                aria-label="חזרה לכוורת"
+                aria-label="חזרה לרשימת הסקציות"
               >
                 <X size={18} />
-                <span>חזרה לכוורת</span>
+                <span>חזרה לסקציות</span>
               </button>
 
               <div className="flex items-center gap-2">
