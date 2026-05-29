@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { TimelineEvent } from "../types";
+import type { TimelineEvent } from "../../types";
 
 interface Props {
   events: TimelineEvent[];

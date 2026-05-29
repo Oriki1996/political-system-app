@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Clock } from "lucide-react";
 import { useEffect } from "react";
-import type { TimelineEvent } from "../types";
+import type { TimelineEvent } from "../../types";
 import Timeline from "./Timeline";
 
 interface Props {

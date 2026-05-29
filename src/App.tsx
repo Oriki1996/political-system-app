@@ -1,10 +1,10 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
-import Header from "./components/Header";
-import Dashboard from "./components/Dashboard";
-import Login from "./components/Login";
-import SettingsPanel from "./components/SettingsPanel";
-import AccessibilityStatement from "./components/AccessibilityStatement";
-import ErrorBoundary from "./components/ErrorBoundary";
+import Header from "./components/layout/Header";
+import Dashboard from "./components/dashboard/Dashboard";
+import Login from "./components/layout/Login";
+import SettingsPanel from "./components/layout/SettingsPanel";
+import AccessibilityStatement from "./components/layout/AccessibilityStatement";
+import ErrorBoundary from "./components/layout/ErrorBoundary";
 import { AuthProvider, useAuth } from "./lib/auth";
 import { SettingsProvider } from "./lib/settings";
 import { UNIT_METAS } from "./content";
@@ -12,7 +12,7 @@ import { getUnitScoreLite } from "./lib/scoring";
 
 // Unit view (with its heavy exam/puzzle/drawer deps) is code-split — it only
 // loads when the student opens a unit, keeping the initial bundle small.
-const UnitView = lazy(() => import("./components/UnitView"));
+const UnitView = lazy(() => import("./components/unit/UnitView"));
 
 type Route =
   | { view: "dashboard" }

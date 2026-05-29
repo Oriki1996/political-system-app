@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Lock, BookOpen, Sparkles, ChevronLeft } from "lucide-react";
-import { UNIT_METAS } from "../content";
-import type { UnitMeta } from "../types";
-import { getUnitScoreLite } from "../lib/scoring";
-import { useSettings } from "../lib/settings";
-import ScoreChip from "./ScoreChip";
+import { UNIT_METAS } from "../../content";
+import type { UnitMeta } from "../../types";
+import { getUnitScoreLite } from "../../lib/scoring";
+import { useSettings } from "../../lib/settings";
+import ScoreChip from "../common/ScoreChip";
 
 interface Props {
   onPickUnit: (id: string) => void;

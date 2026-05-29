@@ -4,10 +4,10 @@ import {
   X, ChevronLeft, ChevronRight, GraduationCap,
   Check, RotateCcw, Trophy, Flag, AlertCircle, ExternalLink, Quote,
 } from "lucide-react";
-import type { ComprehensionQ } from "../types";
-import { recordWrong, recordRight } from "../lib/mistakes";
-import { recordAttempt } from "../lib/scoring";
-import { shuffleQuestionOptions } from "../lib/shuffleOptions";
+import type { ComprehensionQ } from "../../types";
+import { recordWrong, recordRight } from "../../lib/mistakes";
+import { recordAttempt } from "../../lib/scoring";
+import { shuffleQuestionOptions } from "../../lib/shuffleOptions";
 
 interface ExamModeProps {
   unitId: string;

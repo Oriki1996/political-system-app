@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useAuth } from "../lib/auth";
-import { supabaseEnabled } from "../lib/supabase";
+import { useAuth } from "../../lib/auth";
+import { supabaseEnabled } from "../../lib/supabase";
 
 export default function Login() {
   const { signInWithGoogle, signInGuest } = useAuth();

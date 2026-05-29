@@ -4,7 +4,7 @@ import {
   X, Check, RotateCcw, Puzzle as PuzzleIcon,
   ChevronLeft, ChevronRight, Sparkles, ExternalLink,
 } from "lucide-react";
-import type { Puzzle } from "../types";
+import type { Puzzle } from "../../types";
 
 interface Props {
   puzzles: Puzzle[];

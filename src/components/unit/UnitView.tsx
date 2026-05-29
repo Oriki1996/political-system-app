@@ -4,17 +4,17 @@ import {
   Target, Compass, FileText, ChevronDown,
   GraduationCap, Puzzle as PuzzleIcon, Sparkles, Trophy, Clock,
 } from "lucide-react";
-import type { Unit, UnitMeta, KeyTerm } from "../types";
+import type { Unit, UnitMeta, KeyTerm } from "../../types";
 import SectionCardList, { type SectionCardItem } from "./SectionCardList";
 import SectionDrawer from "./SectionDrawer";
-import TimelineDrawer from "./TimelineDrawer";
-import ExamMode from "./ExamMode";
-import PuzzleMode from "./PuzzleMode";
-import { getMistakeIds, getMistakeCount } from "../lib/mistakes";
-import { getUnitScore, cacheUnitPossible } from "../lib/scoring";
-import { useSettings } from "../lib/settings";
-import { timelineForUnit } from "../content/timeline";
-import { loadUnit } from "../content";
+import TimelineDrawer from "../timeline/TimelineDrawer";
+import ExamMode from "../practice/ExamMode";
+import PuzzleMode from "../practice/PuzzleMode";
+import { getMistakeIds, getMistakeCount } from "../../lib/mistakes";
+import { getUnitScore, cacheUnitPossible } from "../../lib/scoring";
+import { useSettings } from "../../lib/settings";
+import { timelineForUnit } from "../../content/timeline";
+import { loadUnit } from "../../content";
 
 // Gradient rotation for parts — each part gets a distinct accent color
 const PART_GRADIENTS = [

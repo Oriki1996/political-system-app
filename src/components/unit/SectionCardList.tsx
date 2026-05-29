@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Brain, Check, Circle, MessageSquareQuote, BookOpen, Quote } from "lucide-react";
-import type { RichSection } from "../types";
+import type { RichSection } from "../../types";
 
 export interface SectionCardItem {
   section: RichSection;
