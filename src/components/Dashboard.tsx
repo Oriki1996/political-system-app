@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Lock, BookOpen, Sparkles, ChevronLeft } from "lucide-react";
-import { UNITS } from "../content";
-import type { Unit } from "../types";
-import { getUnitScore } from "../lib/scoring";
+import { UNIT_METAS } from "../content";
+import type { UnitMeta } from "../types";
+import { getUnitScoreLite } from "../lib/scoring";
 import { useSettings } from "../lib/settings";
 import ScoreChip from "./ScoreChip";
 
@@ -30,12 +30,10 @@ export default function Dashboard({ onPickUnit }: Props) {
   const totalScore = useMemo(() => {
     let earned = 0;
     let possible = 0;
-    for (const u of UNITS) {
-      if (u.examBank?.length) {
-        const s = getUnitScore(u.id, u.examBank);
-        earned += s.earned;
-        possible += s.possible;
-      }
+    for (const u of UNIT_METAS) {
+      const s = getUnitScoreLite(u.id);
+      earned += s.earned;
+      possible += s.possible;
     }
     return { earned, possible };
   }, [tick]);
@@ -96,7 +94,7 @@ export default function Dashboard({ onPickUnit }: Props) {
       <section>
         <h2 className="text-lg font-bold text-slate-800 dark:text-slate-200 mb-4 px-1">יחידות לימוד</h2>
         <div className="grid sm:grid-cols-2 gap-4">
-          {UNITS.map((unit, i) => (
+          {UNIT_METAS.map((unit, i) => (
             <UnitCard key={unit.id} unit={unit} index={i} onClick={() => onPickUnit(unit.id)} />
           ))}
         </div>
@@ -105,7 +103,7 @@ export default function Dashboard({ onPickUnit }: Props) {
   );
 }
 
-function UnitCard({ unit, index, onClick }: { unit: Unit; index: number; onClick: () => void }) {
+function UnitCard({ unit, index, onClick }: { unit: UnitMeta; index: number; onClick: () => void }) {
   const locked = unit.status === "placeholder";
   const badge = STATUS_BADGE[unit.status];
   const { settings } = useSettings();
@@ -117,10 +115,7 @@ function UnitCard({ unit, index, onClick }: { unit: Unit; index: number; onClick
     return () => window.removeEventListener("psi-score-changed", onChange);
   }, []);
 
-  const score = useMemo(
-    () => (unit.examBank?.length ? getUnitScore(unit.id, unit.examBank) : null),
-    [unit.id, unit.examBank, tick],
-  );
+  const score = useMemo(() => getUnitScoreLite(unit.id), [unit.id, tick]);
 
   return (
     <motion.button

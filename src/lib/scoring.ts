@@ -69,7 +69,44 @@ export function getUnitScore(unitId: string, questions: ComprehensionQ[]) {
   return { earned, possible };
 }
 
+const POSSIBLE_PREFIX = "psi-possible:";
+
+/**
+ * Cache a unit's total possible points (computed once from its exam bank when the
+ * unit is lazily loaded). Lets the dashboard show scores without eagerly importing
+ * every unit's heavy quiz data.
+ */
+export function cacheUnitPossible(unitId: string, questions: ComprehensionQ[]) {
+  const possible = questions.reduce((sum, q) => sum + pointsFor(q), 0);
+  try {
+    localStorage.setItem(`${POSSIBLE_PREFIX}${unitId}`, String(possible));
+  } catch {
+    /* ignore quota errors */
+  }
+  return possible;
+}
+
+function readPossible(unitId: string): number {
+  const raw = localStorage.getItem(`${POSSIBLE_PREFIX}${unitId}`);
+  const n = raw ? parseInt(raw, 10) : 0;
+  return Number.isFinite(n) ? n : 0;
+}
+
+/**
+ * Lightweight score lookup that does NOT require the exam bank.
+ * `earned` is summed from the per-question localStorage map; `possible` comes from
+ * the cached total (populated the first time the unit is opened). Before a unit is
+ * ever visited both are 0 — which is correct, since no questions were answered yet.
+ */
+export function getUnitScoreLite(unitId: string) {
+  const all = readAll(unitId);
+  let earned = 0;
+  for (const id in all) earned += all[id].best;
+  return { earned, possible: readPossible(unitId) };
+}
+
 export function clearUnitScore(unitId: string) {
+  localStorage.removeItem(`${POSSIBLE_PREFIX}${unitId}`);
   localStorage.removeItem(k(unitId));
   window.dispatchEvent(new CustomEvent("psi-score-changed", { detail: { unitId } }));
 }

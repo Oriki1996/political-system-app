@@ -4,16 +4,17 @@ import {
   Target, Compass, FileText, ChevronDown,
   GraduationCap, Puzzle as PuzzleIcon, Sparkles, Trophy, Clock,
 } from "lucide-react";
-import type { Unit, KeyTerm } from "../types";
+import type { Unit, UnitMeta, KeyTerm } from "../types";
 import SectionCardList, { type SectionCardItem } from "./SectionCardList";
 import SectionDrawer from "./SectionDrawer";
 import TimelineDrawer from "./TimelineDrawer";
 import ExamMode from "./ExamMode";
 import PuzzleMode from "./PuzzleMode";
 import { getMistakeIds, getMistakeCount } from "../lib/mistakes";
-import { getUnitScore } from "../lib/scoring";
+import { getUnitScore, cacheUnitPossible } from "../lib/scoring";
 import { useSettings } from "../lib/settings";
 import { timelineForUnit } from "../content/timeline";
+import { loadUnit } from "../content";
 
 // Gradient rotation for parts — each part gets a distinct accent color
 const PART_GRADIENTS = [
@@ -24,7 +25,61 @@ const PART_GRADIENTS = [
   "from-violet-400 to-fuchsia-600",
 ];
 
-export default function UnitView({ unit }: { unit: Unit }) {
+/**
+ * Lazy loader: fetches the unit's heavy content chunk on demand, shows a
+ * lightweight skeleton (with the meta we already have) while it streams,
+ * and caches the unit's total possible points for the dashboard.
+ */
+export default function UnitView({ unitId, meta }: { unitId: string; meta: UnitMeta }) {
+  const [unit, setUnit] = useState<Unit | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    setUnit(null);
+    setFailed(false);
+    loadUnit(unitId)
+      .then((u) => {
+        if (!alive) return;
+        if (u.examBank?.length) cacheUnitPossible(u.id, u.examBank);
+        setUnit(u);
+      })
+      .catch((err) => {
+        console.error("[UnitView] failed to load unit", unitId, err);
+        if (alive) setFailed(true);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [unitId]);
+
+  if (failed) {
+    return (
+      <main id="main" className="max-w-5xl mx-auto px-4 sm:px-6 py-12 text-center" role="main">
+        <div className="card p-8">
+          <div className="text-4xl mb-3">⚠️</div>
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-1.5">לא הצלחנו לטעון את היחידה</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-300">בדוק את החיבור לאינטרנט ונסה לרענן.</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (!unit) {
+    return (
+      <main id="main" className="max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-5" role="main" aria-busy="true">
+        <div className={`card h-36 bg-gradient-to-bl ${meta.color || "from-brand-500 to-accent-500"} animate-pulse`} />
+        <div className="card h-24 animate-pulse" />
+        <div className="card h-64 animate-pulse" />
+        <div className="sr-only" role="status">טוען את יחידה {meta.number}…</div>
+      </main>
+    );
+  }
+
+  return <UnitViewInner unit={unit} />;
+}
+
+function UnitViewInner({ unit }: { unit: Unit }) {
   const isPlaceholder = unit.status === "placeholder";
   const sections = unit.sections || [];
   const { settings } = useSettings();
