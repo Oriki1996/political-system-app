@@ -3,8 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   X, Trophy, Zap, Eye, Type, Link as LinkIcon, RotateCcw, AlertCircle,
 } from "lucide-react";
-import { useSettings, type FontScale } from "../lib/settings";
-import { clearAllScores } from "../lib/scoring";
+import { useSettings, type FontScale } from "../../lib/settings";
+import { clearAllScores } from "../../lib/scoring";
 
 interface Props {
   open: boolean;

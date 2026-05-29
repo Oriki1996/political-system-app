@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, BookOpen, Lightbulb } from "lucide-react";
 import { useEffect } from "react";
-import type { RichSection, KeyTerm } from "../types";
-import { RichLine } from "./RichText";
-import InlineCheckGallery from "./InlineCheckGallery";
-import ComparisonChart from "./ComparisonChart";
+import type { RichSection, KeyTerm } from "../../types";
+import { RichLine } from "../common/RichText";
+import InlineCheckGallery from "../common/InlineCheckGallery";
+import ComparisonChart from "../common/ComparisonChart";
 
 interface SectionDrawerProps {
   section: RichSection | null;

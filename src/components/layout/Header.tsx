@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Moon, Sun, ArrowRight, BookOpen, LogOut, User, Settings, Trophy } from "lucide-react";
-import { initTheme, toggleTheme, isDark } from "../lib/theme";
-import { useAuth } from "../lib/auth";
-import { useSettings } from "../lib/settings";
+import { initTheme, toggleTheme, isDark } from "../../lib/theme";
+import { useAuth } from "../../lib/auth";
+import { useSettings } from "../../lib/settings";
 
 interface Props {
   onHome?: () => void;

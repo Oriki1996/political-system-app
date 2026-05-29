@@ -1,5 +1,5 @@
 import { Trophy } from "lucide-react";
-import { useSettings } from "../lib/settings";
+import { useSettings } from "../../lib/settings";
 
 interface Props {
   earned: number;

@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X, HelpCircle, Sparkles, ChevronRight, ChevronLeft, Brain, Eye, Target } from "lucide-react";
-import type { ComprehensionQ, QuestionLevel } from "../types";
-import { shuffleQuestionOptions } from "../lib/shuffleOptions";
+import type { ComprehensionQ, QuestionLevel } from "../../types";
+import { shuffleQuestionOptions } from "../../lib/shuffleOptions";
 
 const LEVEL_META: Record<QuestionLevel, { label: string; color: string; Icon: typeof Brain }> = {
   recall: {

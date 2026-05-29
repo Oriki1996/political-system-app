@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, type ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BookOpen, X } from "lucide-react";
-import type { KeyTerm } from "../types";
+import type { KeyTerm } from "../../types";
 
 interface Props {
   term: KeyTerm;

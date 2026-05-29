@@ -1,4 +1,4 @@
-import type { RichSegment, SemanticTag, KeyTerm } from "../types";
+import type { RichSegment, SemanticTag, KeyTerm } from "../../types";
 import GlossaryTooltip from "./GlossaryTooltip";
 
 const TAG_CLASS: Record<SemanticTag, string> = {
