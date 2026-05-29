@@ -1,9 +1,11 @@
 import type { Unit, UnitMeta } from "../../types";
 import { unit01 } from "./unit01";
 import { unit02 } from "./unit02";
+import { unit03 } from "./unit03";
 import { unit07 } from "./unit07";
 import { unit08 } from "./unit08";
 import { unit09 } from "./unit09";
+import { unit10 } from "./unit10";
 
 const PALETTE = [
   "from-sky-500 to-indigo-600",
@@ -33,14 +35,12 @@ function placeholder(num: number, title: string, subtitle: string, articles: str
 }
 
 const placeholders: Unit[] = [
-  placeholder(3, "תקופת היישוב", "נתניהו ב' (ז'בוטינסקי) + שפירא 1998", ["נתניהו, זאב ז'בוטינסקי", "שפירא 1998"]),
   placeholder(4, "צמיחתה של המדינה החזקה", "חריס 1997 + שלו 1994", ["חריס 1997", "שלו 1994"]),
   placeholder(5, "המהפך 1977", "גולדשטיין 2011 — בגין", ["גולדשטיין 2011"]),
   placeholder(6, "המפנה הניאו-ליברלי והמהפכה החוקתית", "מנדלקרן · מאוטנר · ספיר · קרמפף", ["מאוטנר 1994", "מנדלקרן 2015", "ספיר 2009", "קרמפף 2018"]),
-  placeholder(10, "המשבר הפוליטי 2019-2022", "נבות וגולדשמידט", ["נבות וגולדשמידט"]),
 ];
 
-const sorted: Unit[] = [unit01, unit02, unit07, unit08, unit09, ...placeholders].sort(
+const sorted: Unit[] = [unit01, unit02, unit03, unit07, unit08, unit09, unit10, ...placeholders].sort(
   (a, b) => a.number - b.number,
 );
 

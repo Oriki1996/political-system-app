@@ -17,7 +17,7 @@ export const unit07Application: ComprehensionQ[] = [
       "2005 — תקופת ההתנתקות, אחרי המאמרים.",
       "2010 — תקופת נתניהו השנייה, רחוק אחרי.",
     ],
-    sectionRef: { sectionId: "u07-s01", quote: "המאמר של דני גוטוויין פורסם במקור בכתב העת מקרוב בשנת 2000.", topic: "publication-year" },
+    sectionRef: { sectionId: "u07-s01", quote: "המאמר של דני גוטוויין פורסם במקור בכתב העת תיאוריה וביקורת בשנת 2000.", topic: "publication-year" },
   },
   {
     id: "ex07-warmup-2",

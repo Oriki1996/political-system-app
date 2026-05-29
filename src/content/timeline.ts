@@ -86,6 +86,22 @@ export const courseTimeline: TimelineEvent[] = [
   { unitId: "unit09", year: "2020", label: "מחאת בלפור (יולי)", description: "מחאה שבועית בבלפור ובגשרים. סקר IDI: 80% מהמפגינים = חילונים. Sorek: ביטוי לקריסת הגמוניית ה-SAJ והתמקדות סמלית בנתניהו.", category: "crisis", sectionRef: "u09-s14" },
   { unitId: "unit09", year: "2021", label: "Sorek & Ceobanu מפרסמים את המחקר", description: "מאמר ב-Ethnic and Racial Studies: 'Benjamin Netanyahu as a mobilizing symbol'. הניתוח הסמלי-כמותי המקיף הראשון.", category: "general", sectionRef: "u09-s12" },
   { unitId: "unit09", year: "2023", label: "ההפיכה המשטרית", description: "הקמת ממשלת נתניהו השישית (דצמבר 2022) ויוזמת לוין-רוטמן (ינואר 2023). יישום קיצוני של חזון 'שלטון הנאמנות' של גוטוויין.", category: "crisis", sectionRef: "u09-s11" },
+
+  // ============= יחידה 10 — המשבר הפוליטי 2019-2022 (נבות וגולדשמידט) =============
+  { unitId: "unit10", year: "2016", label: "תחילת חקירות נתניהו", description: "פרשות 1000, 2000, 4000 נפתחות. נתניהו: 'לא ייצא מזה כלום'.", category: "general", sectionRef: "u10-s05" },
+  { unitId: "unit10", year: "2018", label: "המלצות המשטרה (דצמבר)", description: "המשטרה ממליצה להעמיד את נתניהו לדין בשוחד (פרשת 4000), הפרת אמונים ומרמה.", category: "crisis", sectionRef: "u10-s05" },
+  { unitId: "unit10", year: "2019", label: "החלטת היועץ המשפטי (פברואר)", description: "מנדלבליט מודיע על כתב אישום בכפוף לשימוע. סקרי סמית: 'החקירה מוטה' — 51%→87% בקרב מצביעי ימין תוך חודש.", category: "crisis", sectionRef: "u10-s07" },
+  { unitId: "unit10", year: "2019", label: "בחירות אפריל 2019 — כנסת 21", description: "הליכוד 35 מנדטים. לראשונה הימין לא מצליח להרכיב קואליציה. ליברמן ממשיך לדחות.", category: "crisis", sectionRef: "u10-s11" },
+  { unitId: "unit10", year: "2019", label: "בחירות ספטמבר 2019 — כנסת 22", description: "הליכוד 32 מנדטים. שוב כישלון בהרכבת קואליציה. מינוי אוחנה לשר משפטים (סימן לכוונה לשנות המערכת).", category: "crisis", sectionRef: "u10-s11" },
+  { unitId: "unit10", year: "2019", label: "פריימריז ליכוד (דצמבר)", description: "נתניהו מנצח את גדעון סער במוחץ. אישור פנימי לכיוונו האנטי-מערכת.", category: "general", sectionRef: "u10-s08" },
+  { unitId: "unit10", year: "2020", label: "הגשת כתב האישום (ינואר)", description: "כתב אישום נגד ראש ממשלה בכהונתו — לראשונה בהיסטוריה. שלושה שבועות לפני בחירות כנסת 23.", category: "crisis", sectionRef: "u10-s06" },
+  { unitId: "unit10", year: "2020", label: "מכתב נאמנות בלוק הימין (פברואר)", description: "דרעי (ש\"ס), בנט+שקד (ימינה), ליצמן (יהדות התורה) חותמים: 'לא נתמוך בממשלה שאינה בראשות נתניהו'. הרגע המייסד של בלוק הימין הפורמלי.", category: "synthesis", sectionRef: "u10-s09" },
+  { unitId: "unit10", year: "2020", label: "בחירות מרץ 2020 — כנסת 23", description: "הליכוד 36 מנדטים — ההישג הטוב ביותר מאז 2003! 3 שבועות אחרי כתב האישום. הפאזל המרכזי של המאמר.", category: "synthesis", sectionRef: "u10-s12" },
+  { unitId: "unit10", year: "2020", label: "ממשלת נתניהו-גנץ (מאי)", description: "ממשלת רוטציה בעת קורונה. גנץ סגן עם הבטחת רוטציה. תקציבים קואליציוניים נוצקים בנדיבות.", category: "general", sectionRef: "u10-s12" },
+  { unitId: "unit10", year: "2020", label: "סער יוצא מהליכוד (דצמבר)", description: "גדעון סער מקים תקווה חדשה: 'המפלגה הפכה לכלי שרת לאינטרסים אישיים של ראש הממשלה'.", category: "crisis", sectionRef: "u10-s13" },
+  { unitId: "unit10", year: "2021", label: "בחירות מרץ 2021 — כנסת 24", description: "הליכוד 30 (ירידה של 6), תקווה חדשה 6. ארבע בחירות בשנתיים. נתניהו עוד הצליח להחזיק רוב המלצות.", category: "crisis", sectionRef: "u10-s13" },
+  { unitId: "unit10", year: "2021", label: "ממשלת בנט-לפיד (יוני)", description: "ממשלת השינוי. לראשונה מאז 2009 — בלי נתניהו. רוטציה: בנט תחילה ואז לפיד. רע\"ם (מנסור עבאס) בקואליציה — לראשונה מפלגה ערבית.", category: "synthesis", sectionRef: "u10-s14" },
+  { unitId: "unit10", year: "2022", label: "ממשלת השינוי קורסת (יוני) + בחירות נובמבר — כנסת 25", description: "התפרקות הקואליציה (חשבון יסעור, פעיל). נובמבר 2022: נתניהו חוזר עם 32 מנדטים + ציונות דתית 14 = ממשלת נתניהו השישית. סוף 'בלוק הימין' כתופעה? לא — תחילתה.", category: "synthesis", sectionRef: "u10-s14" },
 ];
 
 /**
