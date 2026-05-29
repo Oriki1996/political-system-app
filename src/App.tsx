@@ -1,14 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import Header from "./components/Header";
 import Dashboard from "./components/Dashboard";
-import UnitView from "./components/UnitView";
 import Login from "./components/Login";
 import SettingsPanel from "./components/SettingsPanel";
 import AccessibilityStatement from "./components/AccessibilityStatement";
+import ErrorBoundary from "./components/ErrorBoundary";
 import { AuthProvider, useAuth } from "./lib/auth";
 import { SettingsProvider } from "./lib/settings";
-import { UNITS } from "./content";
-import { getUnitScore } from "./lib/scoring";
+import { UNIT_METAS } from "./content";
+import { getUnitScoreLite } from "./lib/scoring";
+
+// Unit view (with its heavy exam/puzzle/drawer deps) is code-split — it only
+// loads when the student opens a unit, keeping the initial bundle small.
+const UnitView = lazy(() => import("./components/UnitView"));
 
 type Route =
   | { view: "dashboard" }
@@ -64,12 +68,10 @@ function Shell() {
   const totalScore = useMemo(() => {
     let earned = 0;
     let possible = 0;
-    for (const u of UNITS) {
-      if (u.examBank?.length) {
-        const s = getUnitScore(u.id, u.examBank);
-        earned += s.earned;
-        possible += s.possible;
-      }
+    for (const u of UNIT_METAS) {
+      const s = getUnitScoreLite(u.id);
+      earned += s.earned;
+      possible += s.possible;
     }
     return { earned, possible };
   }, [tick]);
@@ -118,7 +120,17 @@ function Shell() {
       {route.view === "dashboard" ? (
         <Dashboard onPickUnit={(id) => setRoute({ view: "unit", id })} />
       ) : (
-        <UnitView unit={UNITS.find((u) => u.id === route.id)!} />
+        <ErrorBoundary resetKey={route.id}>
+          <Suspense
+            fallback={
+              <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 text-center text-slate-500 dark:text-slate-400 animate-pulse" role="status">
+                טוען יחידה…
+              </div>
+            }
+          >
+            <UnitView unitId={route.id} meta={UNIT_METAS.find((u) => u.id === route.id)!} />
+          </Suspense>
+        </ErrorBoundary>
       )}
       <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} />
       <SiteFooter onAccessibility={() => setRoute({ view: "accessibility" })} />
