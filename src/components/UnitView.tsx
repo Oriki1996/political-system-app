@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Target, Compass, FileText, ChevronDown, BookOpen,
-  Users, Globe2, AlertTriangle, Brain, Layers, Lightbulb,
+  Target, Compass, FileText, ChevronDown,
   GraduationCap, Puzzle as PuzzleIcon, Sparkles, Trophy, Clock,
 } from "lucide-react";
 import type { Unit, KeyTerm } from "../types";
-import Honeycomb, { autoColor, type HoneycombItem } from "./Honeycomb";
+import SectionCardList, { type SectionCardItem } from "./SectionCardList";
 import SectionDrawer from "./SectionDrawer";
 import TimelineDrawer from "./TimelineDrawer";
 import ExamMode from "./ExamMode";
@@ -16,7 +15,14 @@ import { getUnitScore } from "../lib/scoring";
 import { useSettings } from "../lib/settings";
 import { timelineForUnit } from "../content/timeline";
 
-const SECTION_ICONS = [Layers, Brain, Users, Globe2, AlertTriangle, BookOpen, Lightbulb, Compass];
+// Gradient rotation for parts — each part gets a distinct accent color
+const PART_GRADIENTS = [
+  "from-emerald-400 to-teal-600",
+  "from-blue-400 to-indigo-600",
+  "from-amber-400 to-orange-600",
+  "from-rose-400 to-pink-600",
+  "from-violet-400 to-fuchsia-600",
+];
 
 export default function UnitView({ unit }: { unit: Unit }) {
   const isPlaceholder = unit.status === "placeholder";
@@ -71,35 +77,40 @@ export default function UnitView({ unit }: { unit: Unit }) {
     }
   };
 
-  const honeycombItems: HoneycombItem[] = useMemo(
+  /** All sections wrapped as card items (used when no parts grouping). */
+  const allCardItems: SectionCardItem[] = useMemo(
     () =>
       sections.map((s, i) => ({
-        title: s.heading.replace(/—.*$/, "").trim(),
-        subtitle: undefined,
-        color: autoColor(i),
-        Icon: SECTION_ICONS[i % SECTION_ICONS.length],
-        status: (visited.has(i) ? "read" : "unread") as "read" | "unread",
+        section: s,
+        visited: visited.has(i),
+        displayNumber: i + 1,
       })),
     [sections, visited],
   );
 
-  /** For grouped honeycomb: a list of { part, items, indexMap } */
+  /** For grouped layout: list of { part, items (with global idx), visitedInPart }. */
   const partGroups = useMemo(() => {
     if (!hasParts) return [];
     const idToIdx = new Map<string, number>();
     sections.forEach((s, i) => idToIdx.set(s.id, i));
     return parts.map((p) => {
-      const groupItems: { item: HoneycombItem; idx: number }[] = [];
+      const groupItems: { item: SectionCardItem; idx: number }[] = [];
       for (const sid of p.sectionIds) {
         const idx = idToIdx.get(sid);
-        if (idx !== undefined && honeycombItems[idx]) {
-          groupItems.push({ item: honeycombItems[idx], idx });
-        }
+        if (idx === undefined) continue;
+        groupItems.push({
+          item: {
+            section: sections[idx],
+            visited: visited.has(idx),
+            displayNumber: idx + 1,
+          },
+          idx,
+        });
       }
       const visitedInPart = groupItems.filter((g) => visited.has(g.idx)).length;
       return { part: p, items: groupItems, visitedInPart };
     });
-  }, [hasParts, parts, sections, honeycombItems, visited]);
+  }, [hasParts, parts, sections, visited]);
 
   function openSection(i: number) {
     setOpenIdx(i);
@@ -217,8 +228,8 @@ export default function UnitView({ unit }: { unit: Unit }) {
               <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">בחר קטע לימוד</h2>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 {hasParts
-                  ? `${parts.length} חלקים · ${sectionTotal} קטעים — לחץ על משושה לפתיחה`
-                  : "לחץ על משושה — הקטע ייפתח במסך מלא עם שאלות הבנה"}
+                  ? `${parts.length} חלקים · ${sectionTotal} קטעים — לחץ על כרטיסיה לפתיחה`
+                  : "לחץ על כרטיסיה — הקטע ייפתח במסך מלא עם שאלות הבנה"}
               </p>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -242,38 +253,56 @@ export default function UnitView({ unit }: { unit: Unit }) {
           </div>
 
           {hasParts ? (
-            <div className="space-y-6 mt-4">
-              {partGroups.map(({ part, items, visitedInPart }, gi) => (
-                <div key={part.id} className="rounded-2xl border border-slate-200/70 dark:border-slate-800/60 p-3 sm:p-4 bg-slate-50/40 dark:bg-slate-900/30">
-                  <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
-                    <div className="flex-1 min-w-0">
-                      <div className="inline-flex items-center gap-2 mb-0.5">
-                        <span className="text-[10px] font-extrabold tracking-wider uppercase text-brand-700 dark:text-brand-300 bg-brand-100 dark:bg-brand-900/50 rounded-full px-2 py-0.5">
-                          חלק {gi + 1}
-                        </span>
-                        <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-slate-100">
-                          {part.title}
-                        </h3>
+            <div className="space-y-5 mt-4">
+              {partGroups.map(({ part, items, visitedInPart }, gi) => {
+                const gradient = PART_GRADIENTS[gi % PART_GRADIENTS.length];
+                const pct = items.length > 0 ? Math.round((visitedInPart / items.length) * 100) : 0;
+                return (
+                  <div
+                    key={part.id}
+                    className="rounded-2xl border border-slate-200/70 dark:border-slate-800/60 p-3 sm:p-4 bg-slate-50/40 dark:bg-slate-900/30"
+                  >
+                    <div className="flex items-start justify-between gap-3 mb-2 flex-wrap">
+                      <div className="flex-1 min-w-0">
+                        <div className="inline-flex items-center gap-2 mb-0.5 flex-wrap">
+                          <span
+                            className={`text-[10px] font-extrabold tracking-wider uppercase text-white bg-gradient-to-l ${gradient} rounded-full px-2 py-0.5 shadow-sm`}
+                          >
+                            חלק {gi + 1}
+                          </span>
+                          <h3 className="text-sm sm:text-base font-extrabold text-slate-900 dark:text-slate-100">
+                            {part.title}
+                          </h3>
+                        </div>
+                        {part.subtitle && (
+                          <p className="text-[12px] text-slate-600 dark:text-slate-300 leading-snug">
+                            {part.subtitle}
+                          </p>
+                        )}
                       </div>
-                      {part.subtitle && (
-                        <p className="text-[12px] text-slate-600 dark:text-slate-300 leading-snug">
-                          {part.subtitle}
-                        </p>
-                      )}
+                      <div className="shrink-0 flex items-center gap-2">
+                        <div className="w-20 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full bg-gradient-to-l ${gradient} transition-all`}
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                        <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 tabular-nums">
+                          {visitedInPart}/{items.length}
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-[11px] font-bold text-slate-500 dark:text-slate-400 tabular-nums shrink-0">
-                      {visitedInPart}/{items.length}
-                    </span>
+                    <SectionCardList
+                      items={items.map((g) => g.item)}
+                      accentGradient={gradient}
+                      onSelect={(localIdx) => openSection(items[localIdx].idx)}
+                    />
                   </div>
-                  <Honeycomb
-                    items={items.map((g) => g.item)}
-                    onSelect={(localIdx) => openSection(items[localIdx].idx)}
-                  />
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
-            <Honeycomb items={honeycombItems} onSelect={openSection} />
+            <SectionCardList items={allCardItems} onSelect={openSection} />
           )}
 
           {visitedCount > 0 && (
