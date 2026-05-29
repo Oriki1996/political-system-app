@@ -3,6 +3,7 @@ import { unit01 } from "./unit01";
 import { unit02 } from "./unit02";
 import { unit03 } from "./unit03";
 import { unit04 } from "./unit04";
+import { unit05 } from "./unit05";
 import { unit07 } from "./unit07";
 import { unit08 } from "./unit08";
 import { unit09 } from "./unit09";
@@ -36,11 +37,10 @@ function placeholder(num: number, title: string, subtitle: string, articles: str
 }
 
 const placeholders: Unit[] = [
-  placeholder(5, "המהפך 1977", "גולדשטיין 2011 — בגין", ["גולדשטיין 2011"]),
   placeholder(6, "המפנה הניאו-ליברלי והמהפכה החוקתית", "מנדלקרן · מאוטנר · ספיר · קרמפף", ["מאוטנר 1994", "מנדלקרן 2015", "ספיר 2009", "קרמפף 2018"]),
 ];
 
-const sorted: Unit[] = [unit01, unit02, unit03, unit04, unit07, unit08, unit09, unit10, ...placeholders].sort(
+const sorted: Unit[] = [unit01, unit02, unit03, unit04, unit05, unit07, unit08, unit09, unit10, ...placeholders].sort(
   (a, b) => a.number - b.number,
 );
 
