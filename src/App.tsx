@@ -149,7 +149,7 @@ function SiteFooter({ onAccessibility }: { onAccessibility: () => void }) {
   return (
     <footer className="max-w-5xl mx-auto px-4 sm:px-6 py-8 mt-8 text-center text-xs text-slate-500 dark:text-slate-500 border-t border-slate-200/60 dark:border-slate-800/60" role="contentinfo">
       <div className="space-y-2">
-        <div>מבוסס על שמעוני 2001 ומאמרי החובה האחרים בסילבוס · עיצוב למידה אישי לאורי בן-דוד</div>
+        <div>מבוסס על מאמרי החובה של הסילבוס · עיצוב למידה אישי לאורי בן-דוד</div>
         <div className="flex items-center justify-center gap-3">
           <button
             onClick={onAccessibility}
