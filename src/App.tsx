@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import Header from "./components/layout/Header";
 import Dashboard from "./components/dashboard/Dashboard";
 import Login from "./components/layout/Login";
+import ClassBoard from "./components/board/ClassBoard";
 import SettingsPanel from "./components/layout/SettingsPanel";
 import AccessibilityStatement from "./components/layout/AccessibilityStatement";
 import ErrorBoundary from "./components/layout/ErrorBoundary";
@@ -18,11 +19,13 @@ const UnitView = lazy(() => import("./components/unit/UnitView"));
 type Route =
   | { view: "dashboard" }
   | { view: "unit"; id: string }
+  | { view: "board" }
   | { view: "accessibility" };
 
 function readRouteFromUrl(): Route {
   const path = window.location.pathname;
   if (path === "/accessibility") return { view: "accessibility" };
+  if (path === "/board") return { view: "board" };
   const m = path.match(/^\/unit\/(unit\d+)$/);
   if (m) return { view: "unit", id: m[1] };
   return { view: "dashboard" };
@@ -30,6 +33,7 @@ function readRouteFromUrl(): Route {
 
 function urlForRoute(r: Route): string {
   if (r.view === "accessibility") return "/accessibility";
+  if (r.view === "board") return "/board";
   if (r.view === "unit") return `/unit/${r.id}`;
   return "/";
 }
@@ -134,10 +138,13 @@ function Shell() {
         onHome={goHome}
         showBack={route.view !== "dashboard"}
         onOpenSettings={() => setSettingsOpen(true)}
+        onBoard={() => setRoute({ view: "board" })}
         totalScore={totalScore}
       />
       {route.view === "dashboard" ? (
         <Dashboard onPickUnit={(id) => setRoute({ view: "unit", id })} />
+      ) : route.view === "board" ? (
+        <ClassBoard />
       ) : (
         <ErrorBoundary resetKey={route.id}>
           <Suspense
