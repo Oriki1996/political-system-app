@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase, supabaseEnabled, APP_NAMESPACE } from "./supabase";
+import { ensureProfile, getShareScores, setShareScoresDb } from "./cloudScores";
 
 interface Profile {
   id: string;
@@ -20,6 +21,9 @@ interface AuthCtx {
   signOut: () => Promise<void>;
   isGuest: boolean;
   cloudEnabled: boolean;
+  /** Whether the student's score is visible to others (default: true). */
+  shareScores: boolean;
+  updateShareScores: (v: boolean) => void;
 }
 
 const Ctx = createContext<AuthCtx | null>(null);
@@ -31,6 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [guestName, setGuestName] = useState<string | null>(() => localStorage.getItem(GUEST_KEY));
+  const [shareScores, setShareScores] = useState(true);
 
   useEffect(() => {
     if (!supabaseEnabled || !supabase) {
@@ -54,7 +59,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setProfile(null);
       return;
     }
-    // Build a profile from the Google user_metadata — no DB write yet (table may not exist)
+    // Build a profile from the Google user_metadata for instant UI.
     const display = user.user_metadata?.full_name || user.email?.split("@")[0] || "סטודנט";
     setProfile({
       id: user.id,
@@ -62,7 +67,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email: user.email,
       avatar_url: user.user_metadata?.avatar_url,
     });
+    // Best-effort cloud profile: ensure a row exists and load the visibility choice.
+    ensureProfile(user).then(() => getShareScores(user.id)).then(setShareScores).catch(() => {});
   }, [user]);
+
+  function updateShareScores(v: boolean) {
+    setShareScores(v);
+    if (user) setShareScoresDb(user.id, v);
+  }
 
   async function signInWithGoogle() {
     if (!supabase) return;
@@ -106,6 +118,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signOut,
         isGuest,
         cloudEnabled: supabaseEnabled && Boolean(user),
+        shareScores,
+        updateShareScores,
       }}
     >
       {children}

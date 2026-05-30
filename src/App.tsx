@@ -9,6 +9,7 @@ import { AuthProvider, useAuth } from "./lib/auth";
 import { SettingsProvider } from "./lib/settings";
 import { UNIT_METAS } from "./content";
 import { getUnitScoreLite } from "./lib/scoring";
+import { upsertUnitScore } from "./lib/cloudScores";
 
 // Unit view (with its heavy exam/puzzle/drawer deps) is code-split — it only
 // loads when the student opens a unit, keeping the initial bundle small.
@@ -34,7 +35,7 @@ function urlForRoute(r: Route): string {
 }
 
 function Shell() {
-  const { profile, loading } = useAuth();
+  const { profile, loading, user } = useAuth();
   const [route, setRouteState] = useState<Route>(() => readRouteFromUrl());
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [tick, setTick] = useState(0);
@@ -64,6 +65,24 @@ function Shell() {
     window.addEventListener("psi-score-changed", onChange);
     return () => window.removeEventListener("psi-score-changed", onChange);
   }, []);
+
+  // Cloud sync (best-effort): push local exam scores up so the class board is
+  // current. On login, upload everything once; then on each score change.
+  useEffect(() => {
+    if (!user) return;
+    for (const u of UNIT_METAS) {
+      const s = getUnitScoreLite(u.id);
+      if (s.possible > 0) upsertUnitScore(user.id, u.id, s.earned, s.possible);
+    }
+    const onChange = (e: Event) => {
+      const unitId = (e as CustomEvent).detail?.unitId;
+      if (!unitId) return;
+      const s = getUnitScoreLite(unitId);
+      upsertUnitScore(user.id, unitId, s.earned, s.possible);
+    };
+    window.addEventListener("psi-score-changed", onChange);
+    return () => window.removeEventListener("psi-score-changed", onChange);
+  }, [user]);
 
   const totalScore = useMemo(() => {
     let earned = 0;

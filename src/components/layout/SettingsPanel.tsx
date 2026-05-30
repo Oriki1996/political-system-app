@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  X, Trophy, Zap, Eye, Type, Link as LinkIcon, RotateCcw, AlertCircle,
+  X, Trophy, Zap, Eye, Type, Link as LinkIcon, RotateCcw, AlertCircle, Users,
 } from "lucide-react";
 import { useSettings, type FontScale } from "../../lib/settings";
+import { useAuth } from "../../lib/auth";
 import { clearAllScores } from "../../lib/scoring";
 
 interface Props {
@@ -20,6 +21,7 @@ const FONT_SCALES: { value: FontScale; label: string }[] = [
 
 export default function SettingsPanel({ open, onClose }: Props) {
   const { settings, setSetting, reset } = useSettings();
+  const { user, shareScores, updateShareScores } = useAuth();
   const closeRef = useRef<HTMLButtonElement>(null);
 
   // Focus management
@@ -93,6 +95,18 @@ export default function SettingsPanel({ open, onClose }: Props) {
                   onChange={(v) => setSetting("scoringEnabled", v)}
                 />
               </Section>
+
+              {/* Sharing / class board — only for signed-in students */}
+              {user && (
+                <Section title="שיתוף ולוח כיתה" icon={<Users size={18} className="text-sky-600" />}>
+                  <ToggleRow
+                    label="אחרים יכולים לראות את הניקוד שלי"
+                    description="כשמופעל, השם והציון שלך מופיעים בלוח הכיתה לכל הסטודנטים. אפשר לשנות את זה בכל רגע."
+                    checked={shareScores}
+                    onChange={updateShareScores}
+                  />
+                </Section>
+              )}
 
               {/* Motion */}
               <Section title="תנועה ואנימציה" icon={<Zap size={18} className="text-violet-600" />}>
