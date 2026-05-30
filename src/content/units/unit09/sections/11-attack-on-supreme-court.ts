@@ -83,7 +83,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s11-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מהי המשמעות של העובדה שיריב לוין השתמש בביטוי 'טיפול שורש' למערכת המשפט כבר ב-2011, 12 שנים לפני ההפיכה המשטרית ב-2023?",
       options: [

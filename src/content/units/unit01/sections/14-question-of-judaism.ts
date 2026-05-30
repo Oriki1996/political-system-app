@@ -129,7 +129,7 @@ export const section: RichSection = {
     },
     {
       id: "u01-s14-q3",
-      level: "critical",
+      level: "integration",
       question:
         "מה ההבדל בין הבחנת אחד העם בין מצוקה 'אישית' לבין מצוקה 'לאומית' לבין הבחנת נורדאו בין מצוקה 'גשמית' לבין 'מוסרית'?",
       options: [

@@ -76,7 +76,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s02-q2",
-      level: "integration",
+      level: "critical",
       question:
         "לפי גוטוויין, מדוע השמאל הישראלי הפסיד את תמיכת המעמדות הנמוכים — למרות שטען שייצג אותם?",
       options: [

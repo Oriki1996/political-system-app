@@ -85,7 +85,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s10-q2",
-      level: "integration",
+      level: "critical",
       question:
         "כיצד 'שלום כלכלי' של נתניהו מתקשר ל-15 מיליארד השקלים שהוקצו למגזר הערבי?",
       options: [

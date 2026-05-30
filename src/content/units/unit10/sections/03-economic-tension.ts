@@ -83,7 +83,7 @@ export const section: RichSection = {
     },
     {
       id: "u10-s03-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מדוע, לפי המאמר, צירוף 'עניין מבני' ו'עניין אישי' הוא תנאי הכרחי למאבק יעיל במערכת המשפט?",
       options: [

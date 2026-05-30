@@ -160,7 +160,7 @@ export const section: RichSection = {
     },
     {
       id: "u03-s06-q3",
-      level: "integration",
+      level: "critical",
       question:
         "ליסק והורביץ מסכמים שהאפשרות היחידה להדחת מפא\"י היא התעצמות של מפלגות המרכז-ימין. למה הניתוח הזה מעניין במיוחד בהקשר ההיסטורי של הפרסום?",
       options: [

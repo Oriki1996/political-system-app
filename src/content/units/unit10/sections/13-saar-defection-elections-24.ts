@@ -86,7 +86,7 @@ export const section: RichSection = {
     },
     {
       id: "u10-s13-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מדוע פרישת סער מאירה את 'הגבול של הפרסוניפיקציה' לפי הניתוח של נבות וגולדשמידט?",
       options: [

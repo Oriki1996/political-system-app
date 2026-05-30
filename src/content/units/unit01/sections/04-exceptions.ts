@@ -66,7 +66,7 @@ export const section: RichSection = {
     },
     {
       id: "u01-s04-q2",
-      level: "integration",
+      level: "apply",
       question:
         "נסה להחיל את הציר פונקציונלי/אורגני על מחלוקת ציבורית בישראל ב-2026. דוגמה: חוק הלאום (2018). מי משתמש באיזה דפוס?",
       options: [

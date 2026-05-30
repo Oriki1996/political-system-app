@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, X, HelpCircle, Sparkles, ChevronRight, ChevronLeft, Brain, Eye, Target } from "lucide-react";
+import { Check, X, HelpCircle, Sparkles, ChevronRight, ChevronLeft, Brain, Eye, Target, Wrench } from "lucide-react";
 import type { ComprehensionQ, QuestionLevel } from "../../types";
 import { shuffleQuestionOptions } from "../../lib/shuffleOptions";
 
@@ -9,6 +9,11 @@ const LEVEL_META: Record<QuestionLevel, { label: string; color: string; Icon: ty
     label: "הבנה",
     color: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-200 dark:border-emerald-800/50",
     Icon: Brain,
+  },
+  apply: {
+    label: "יישום",
+    color: "bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950/40 dark:text-sky-200 dark:border-sky-800/50",
+    Icon: Wrench,
   },
   critical: {
     label: "ביקורתית",

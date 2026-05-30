@@ -173,7 +173,7 @@ export const section: RichSection = {
     },
     {
       id: "u05-s09-q3",
-      level: "critical",
+      level: "integration",
       question: "מה השלימה הקמת גח\"ל באסטרטגיה של בגין?",
       options: [
         "פיוס עם מפא\"י",

@@ -75,7 +75,7 @@ export const section: RichSection = {
     },
     {
       id: "u10-s10-q2",
-      level: "integration",
+      level: "critical",
       question:
         "כיצד הפרסוניפיקציה מסבירה למה תמיכה של מפלגה חרדית או ציונית-דתית בקואליציה אחרת (לא בראשות נתניהו) הפכה ל'בלתי לגיטימית' פוליטית?",
       options: [

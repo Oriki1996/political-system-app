@@ -152,7 +152,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s05-q3",
-      level: "integration",
+      level: "critical",
       question: "מה היחס בין תזת 'הפשרה' לבין הביקורת על 'אקטיביזם שיפוטי' של בית-המשפט?",
       options: [
         "אין קשר",

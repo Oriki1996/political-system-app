@@ -127,7 +127,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s07-q2",
-      level: "integration",
+      level: "recall",
       question: "מהם שני השינויים הפוליטיים שאיפשרו את חקיקת חוקי-היסוד ב-1992?",
       options: [
         "שינוי כלכלי בלבד",

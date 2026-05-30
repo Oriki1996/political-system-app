@@ -85,7 +85,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s04-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מדוע, לפי גוטוויין, מחאת האוהלים של 2011 היא אבחנה היסטורית מבחינת הימין, גם אם המחאה עצמה כשלה?",
       options: [

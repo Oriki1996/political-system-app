@@ -79,7 +79,7 @@ export const section: RichSection = {
     },
     {
       id: "u10-s06-q2",
-      level: "integration",
+      level: "recall",
       question:
         "כיצד החלטת מנדלבליט פעלה בפועל כצעד שחיזק את הקיטוב הפוליטי בישראל, על פי הסקרים של נבות וגולדשמידט?",
       options: [

@@ -91,7 +91,7 @@ export const section: RichSection = {
     },
     {
       id: "u08-s11-q2",
-      level: "integration",
+      level: "recall",
       question:
         "מה בשארה מתכוון בכך ש'המפנה הוא דו-סיטרי' — כשהוא מנתח את האירוע של מאי 1995?",
       options: [

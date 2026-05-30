@@ -151,7 +151,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s10-q3",
-      level: "integration",
+      level: "critical",
       question: "מהי הדינמיקה בין נתניהו לטכנוקרטים שאיפשרה את הרפורמה?",
       options: [
         "הם פעלו בנפרד",

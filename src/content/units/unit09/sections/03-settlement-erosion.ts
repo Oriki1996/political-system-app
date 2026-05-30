@@ -85,7 +85,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s03-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מהי משמעות הנתון של גוטוויין שלמעלה מ-75% מהגידול באוכלוסיית ההתנחלויות ב-2009-2015 היה מריבוי טבעי?",
       options: [

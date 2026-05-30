@@ -97,7 +97,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s09-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מהי האסימטריה המבנית בחוק העמותות (2016), ולמה היא חשובה למסגרת הניתוח של גוטוויין?",
       options: [

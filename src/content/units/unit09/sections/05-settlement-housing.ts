@@ -83,7 +83,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s05-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מהי המשמעות של 'תמהיל אידיאולוגי-חומרי' שגוטוויין רואה במחקרה של סוויד על גוש קטיף?",
       options: [

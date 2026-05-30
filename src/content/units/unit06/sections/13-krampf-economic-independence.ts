@@ -159,7 +159,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s13-q3",
-      level: "integration",
+      level: "critical",
       question: "מי משלם את המחיר של עצמאות כלכלית בישראל?",
       options: [
         "אף אחד — כולם נהנים",

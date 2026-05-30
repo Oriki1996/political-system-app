@@ -78,7 +78,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s01-q2",
-      level: "integration",
+      level: "critical",
       question:
         "לפי גוטוויין, מהו היחס בין שלטון הנאמנות לבין הניאו-ליברליזם — ומה חשיבותו של היחס הזה לניתוח?",
       options: [

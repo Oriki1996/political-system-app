@@ -149,7 +149,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s09-q3",
-      level: "integration",
+      level: "recall",
       question: "מי הרוויח, ומי הפסיד, מהמהלך של 1985?",
       options: [
         "כולם הרוויחו",

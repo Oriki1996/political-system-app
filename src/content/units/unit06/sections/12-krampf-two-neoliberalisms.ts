@@ -160,7 +160,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s12-q3",
-      level: "integration",
+      level: "critical",
       question: "מהי הסיבה המבנית למעבר של ישראל מהקוסמופוליטי לבדלני?",
       options: [
         "אין סיבה",

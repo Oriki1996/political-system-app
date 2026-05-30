@@ -11,7 +11,10 @@ export interface RichSegment {
   tag?: SemanticTag;
 }
 
-export type QuestionLevel = "recall" | "critical" | "integration";
+// Pragmatic, content-honest set (not a forced per-section quota):
+// recall = remember/understand · apply = transfer to a new case ·
+// critical = analyze/evaluate · integration = synthesize across sources.
+export type QuestionLevel = "recall" | "apply" | "critical" | "integration";
 
 /** Pointer to source material — lets the review screen jump back to the section. */
 export interface SectionRef {

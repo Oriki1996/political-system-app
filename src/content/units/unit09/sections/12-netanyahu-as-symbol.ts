@@ -83,7 +83,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s12-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מהי המשמעות של הממצא שהפער ברגש כלפי נתניהו התרחב מ-1.4 ב-2009 ל-4.7 ב-2020, בעוד שפערים בעמדות פוליטיות אחרות דווקא הצטמצמו?",
       options: [

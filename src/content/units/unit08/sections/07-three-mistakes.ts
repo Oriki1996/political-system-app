@@ -90,7 +90,7 @@ export const section: RichSection = {
     },
     {
       id: "u08-s07-q2",
-      level: "integration",
+      level: "recall",
       question:
         "לפי בשארה, מה יוביל לקריסה התיאורטית של מודל 'הדמוקרטיה האתנית' — ומדוע?",
       options: [
