@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, BookOpen, Lightbulb } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import type { RichSection, KeyTerm } from "../../types";
 import { RichLine } from "../common/RichText";
 import InlineCheckGallery from "../common/InlineCheckGallery";
@@ -24,6 +24,15 @@ const CALLOUT_BG: Record<string, string> = {
 };
 
 export default function SectionDrawer({ section, index, total, onClose, onPrev, onNext, keyTerms }: SectionDrawerProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // When moving to another section, jump the drawer back to the top so the
+  // reader lands on the new section's heading — not wherever they were scrolled
+  // (otherwise "next" leaves them stuck at the previous section's questions).
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: 0, behavior: "auto" });
+  }, [index, section]);
+
   useEffect(() => {
     if (section) {
       const prev = document.body.style.overflow;
@@ -48,6 +57,7 @@ export default function SectionDrawer({ section, index, total, onClose, onPrev, 
       {section && (
         <motion.div
           key="section-overlay"
+          ref={scrollRef}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
