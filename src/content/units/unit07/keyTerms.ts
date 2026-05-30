@@ -330,14 +330,6 @@ export const unit07KeyTerms: KeyTerm[] = [
     triggers: ["ענבי זעם", "מבצע ענבי זעם", "כפר קנא"],
   },
   {
-    id: "theory-criticism-journal",
-    term: "תיאוריה וביקורת",
-    english: "Theory and Criticism (journal)",
-    definition: "כתב עת ישראלי לחקר החברה והתרבות (מכון ון-ליר). בגיליון 16 (2000) פורסם המאמר 'הדיאלקטיקה של כשל השוויון' של דני גוטוויין, שניתח את כשל מפלגת-העבודה.",
-    category: "term",
-    triggers: ["תיאוריה וביקורת"],
-  },
-  {
     id: "haredim",
     term: "חרדים",
     english: "Ultra-Orthodox Jews",
