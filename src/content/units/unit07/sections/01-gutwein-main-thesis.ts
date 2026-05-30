@@ -9,7 +9,7 @@ export const section: RichSection = {
       { text: "המאמר של " },
       { text: "דני גוטוויין", tag: "name" },
       { text: " פורסם במקור בכתב העת " },
-      { text: "תיאוריה וביקורת", tag: "term" },
+      { text: "מקרוב", tag: "term" },
       { text: " בשנת " },
       { text: "2000", tag: "date" },
       { text: ", במהלך החצי הראשון של כהונת ממשלת אהוד ברק. הוא נכתב כביקורת על ספרו של " },
