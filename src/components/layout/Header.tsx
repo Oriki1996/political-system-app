@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Moon, Sun, ArrowRight, BookOpen, LogOut, User, Settings, Trophy } from "lucide-react";
+import { Moon, Sun, ArrowRight, BookOpen, LogOut, User, Settings, Trophy, Users } from "lucide-react";
 import { initTheme, toggleTheme, isDark } from "../../lib/theme";
 import { useAuth } from "../../lib/auth";
 import { useSettings } from "../../lib/settings";
@@ -8,10 +8,11 @@ interface Props {
   onHome?: () => void;
   showBack?: boolean;
   onOpenSettings?: () => void;
+  onBoard?: () => void;
   totalScore?: { earned: number; possible: number };
 }
 
-export default function Header({ onHome, showBack, onOpenSettings, totalScore }: Props) {
+export default function Header({ onHome, showBack, onOpenSettings, onBoard, totalScore }: Props) {
   const [dark, setDark] = useState(false);
   const { profile, signOut, isGuest } = useAuth();
   const { settings } = useSettings();
@@ -67,6 +68,17 @@ export default function Header({ onHome, showBack, onOpenSettings, totalScore }:
             <span className="font-medium truncate max-w-[120px]">{profile.display_name}</span>
             {isGuest && <span className="text-amber-600 dark:text-amber-400 text-[10px]">·אורח</span>}
           </div>
+        )}
+
+        {onBoard && profile && !isGuest && (
+          <button
+            onClick={onBoard}
+            className="btn-ghost !p-2 focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:outline-none"
+            aria-label="לוח הכיתה"
+            title="לוח הכיתה"
+          >
+            <Users size={18} aria-hidden="true" />
+          </button>
         )}
 
         {onOpenSettings && (
