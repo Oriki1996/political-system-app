@@ -169,7 +169,7 @@ export const section: RichSection = {
     },
     {
       id: "u04-s05-q3",
-      level: "integration",
+      level: "recall",
       question:
         "מה היתה ההשלכה ארוכת-הטווח של הגרעין השיפוטי שהתגבש ב-1953-1954?",
       options: [

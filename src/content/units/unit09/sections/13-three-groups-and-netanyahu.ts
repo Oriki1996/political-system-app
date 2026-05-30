@@ -87,7 +87,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s13-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מהי המשמעות של השינוי הדמוגרפי בבג\"ץ — מ-10 מתוך 14 שופטים חילונים אשכנזים ב-2006 ל-5 מתוך 15 כיום — מבחינת הניתוח של Sorek & Ceobanu?",
       options: [

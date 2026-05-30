@@ -72,7 +72,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s07-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מהי המשמעות של 'שתי מערכות רווחה נפרדות והפוכות במגמתן' בתוך אותו שלטון — וכיצד היא קשורה למנגנון הפיצוי?",
       options: [

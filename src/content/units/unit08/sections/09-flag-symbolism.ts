@@ -81,7 +81,7 @@ export const section: RichSection = {
     },
     {
       id: "u08-s09-q2",
-      level: "integration",
+      level: "recall",
       question:
         "מה תרמו מלחמת המפרץ (1991) ואוסלו (1993) להתפשטות תופעת הנפת דגל ישראל על מכוניות ערביות?",
       options: [

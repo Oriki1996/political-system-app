@@ -94,7 +94,7 @@ export const section: RichSection = {
     },
     {
       id: "u10-s09-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מדוע מכתב הנאמנות הוא 'הרגע המוסדי המכונן' של 'בלוק הימין' לפי נבות וגולדשמידט, ולא רק עוד הסכם קואליציוני?",
       options: [

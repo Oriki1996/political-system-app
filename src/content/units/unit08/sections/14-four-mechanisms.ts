@@ -94,7 +94,7 @@ export const section: RichSection = {
     },
     {
       id: "u08-s14-q2",
-      level: "integration",
+      level: "recall",
       question:
         "מהו ה'חיקוי של חיקוי' — הרובד העמוק של המנגנון הרביעי (אימוץ תרבות ישראלית)?",
       options: [

@@ -150,7 +150,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s11-q3",
-      level: "integration",
+      level: "recall",
       question: "מהי האסטרטגיה לחלופה לניאו-ליברליזם לפי מנדלקרן?",
       options: [
         "חזרה לעידן 1948-1985",

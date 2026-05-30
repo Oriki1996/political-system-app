@@ -150,7 +150,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s08-q3",
-      level: "integration",
+      level: "critical",
       question: "מהי 'האמונה הליברלית' (liberal creed) ומדוע היא חשובה להסבר של מנדלקרן?",
       options: [
         "אמונה דתית רגילה",

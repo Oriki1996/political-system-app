@@ -110,7 +110,7 @@ export const section: RichSection = {
   comprehensionChecks: [
     {
       id: "u06-s14-q1",
-      level: "critical",
+      level: "integration",
       question: "מהי ההקבלה המבנית בין המהפכה החוקתית למהפכה הניאו-ליברלית?",
       options: [
         "אין הקבלה",
@@ -160,7 +160,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s14-q3",
-      level: "critical",
+      level: "integration",
       question: "מהי המסקנה ההיסטורית-מבנית של שילוב 4 המאמרים על ישראל 1985-2003?",
       options: [
         "אין מסקנה",

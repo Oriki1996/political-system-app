@@ -83,7 +83,7 @@ export const section: RichSection = {
     },
     {
       id: "u10-s02-q2",
-      level: "integration",
+      level: "critical",
       question:
         "כיצד המימד הכלכלי-הסקטוריאלי שמוסיפים נבות וגולדשמידט מסביר מדוע מאבק בעמדות מערכת המשפט אינו רק רטורי אלא בעל בסיס מבני?",
       options: [

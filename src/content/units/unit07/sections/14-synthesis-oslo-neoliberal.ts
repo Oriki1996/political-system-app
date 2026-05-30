@@ -84,7 +84,7 @@ export const section: RichSection = {
     },
     {
       id: "u07-s14-q2",
-      level: "critical",
+      level: "integration",
       question:
         "למה ההתנגדות לרבין הייתה חריפה כל-כך — חריפה מספיק כדי להוביל לרצח?",
       options: [

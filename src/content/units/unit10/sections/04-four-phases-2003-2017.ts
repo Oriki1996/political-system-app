@@ -73,7 +73,7 @@ export const section: RichSection = {
     },
     {
       id: "u10-s04-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מה משמעות עיתויה של 'תקופה III' (מ-2015 ואילך) בטיעון של נבות וגולדשמידט על הקשר בין המסע נגד מערכת המשפט להסתבכות האישית?",
       options: [

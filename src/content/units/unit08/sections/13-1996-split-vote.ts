@@ -86,7 +86,7 @@ export const section: RichSection = {
     },
     {
       id: "u08-s13-q2",
-      level: "integration",
+      level: "recall",
       question:
         "מה מציין בשארה כאשר הוא אומר ש'הזהות היא צורך, בדיוק כמו הצרכים האחרים שנאבקים עליהם'?",
       options: [

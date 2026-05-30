@@ -157,7 +157,7 @@ export const section: RichSection = {
     },
     {
       id: "u06-s01-q3",
-      level: "integration",
+      level: "critical",
       question: "מדוע לפי מאוטנר 'הסבירות המקצועית' בעייתית, בעוד 'הסבירות המשפטית' תקינה?",
       options: [
         "להפך — המשפטית היא הבעייתית",

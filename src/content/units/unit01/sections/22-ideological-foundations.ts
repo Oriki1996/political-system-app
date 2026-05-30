@@ -152,7 +152,7 @@ export const section: RichSection = {
     },
     {
       id: "u01-s22-q3",
-      level: "critical",
+      level: "integration",
       question:
         "גליקסון (1919) ראה גם בהרצל וגם באחד העם את 'האבות המייסדים' של הציונות. מה זה אומר על הציונות הכללית?",
       options: [

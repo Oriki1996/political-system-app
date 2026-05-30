@@ -5,7 +5,8 @@ const KEY_PREFIX = "psi-scores:";
 /** Points per question level (overridable via settings later) */
 export function pointsFor(q: ComprehensionQ): number {
   if (q.difficulty === "hard") return 4;
-  if (q.level === "critical" || q.level === "integration") return 4;
+  // Higher-order thinking (apply/analyze/synthesize) is worth more than recall.
+  if (q.level === "apply" || q.level === "critical" || q.level === "integration") return 4;
   return 2;
 }
 

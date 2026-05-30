@@ -85,7 +85,7 @@ export const section: RichSection = {
     },
     {
       id: "u10-s01-q2",
-      level: "integration",
+      level: "critical",
       question:
         "כיצד החפיפה בין האינטרס האישי של נתניהו לבין האינטרס של מפלגות הימין מסבירה את התגבשות 'בלוק הימין'?",
       options: [

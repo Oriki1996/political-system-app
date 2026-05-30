@@ -71,7 +71,7 @@ export const section: RichSection = {
     },
     {
       id: "u09-s08-q2",
-      level: "integration",
+      level: "critical",
       question:
         "מהו ההבדל המבני המרכזי בין מנגנון ההתנחלות לבין שלטון הנאמנות — ומדוע ההבדל הזה חשוב לטיעון של גוטוויין?",
       options: [

@@ -174,7 +174,7 @@ export const section: RichSection = {
     },
     {
       id: "u03-s12-q3",
-      level: "critical",
+      level: "integration",
       question:
         "כיצד מתחבר הניתוח של נתניהו על ז'בוטינסקי לסכמה של ליסק והורביץ ב'מבחן המעבר'?",
       options: [
